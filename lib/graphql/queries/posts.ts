@@ -85,3 +85,11 @@ export const GET_ALL_POST_SLUGS = gql`
     }
   }
 `;
+
+export const GET_POST_SLUGS_WITH_DATES = gql`
+  query GetPostSlugsWithDates {
+    posts(first: 1000) {
+      nodes { slug modified }
+    }
+  }
+`;

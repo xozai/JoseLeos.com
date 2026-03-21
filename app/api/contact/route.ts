@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
+import { kv } from "@vercel/kv";
 import { z } from "zod";
 
 const schema = z.object({
@@ -24,6 +25,21 @@ export async function POST(req: NextRequest) {
       subject: `[joseLeos.com] ${data.subject}`,
       text: `From: ${data.name} <${data.email}>\n\n${data.message}`,
     });
+
+    // Persist to KV for the owner dashboard (keep the last 100)
+    try {
+      const entry = JSON.stringify({
+        name: data.name,
+        email: data.email,
+        subject: data.subject,
+        message: data.message,
+        date: new Date().toISOString(),
+      });
+      await kv.lpush("contacts", entry);
+      await kv.ltrim("contacts", 0, 99);
+    } catch {
+      /* non-fatal — email was already sent */
+    }
 
     return NextResponse.json({ ok: true });
   } catch {

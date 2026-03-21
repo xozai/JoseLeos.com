@@ -80,3 +80,11 @@ export const GET_ALL_PROJECT_SLUGS = gql`
     }
   }
 `;
+
+export const GET_PROJECT_SLUGS_WITH_DATES = gql`
+  query GetProjectSlugsWithDates {
+    portfolioProjects(first: 1000) {
+      nodes { slug modified }
+    }
+  }
+`;
