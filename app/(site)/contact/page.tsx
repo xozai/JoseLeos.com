@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import ContactForm from "@/components/home/ContactForm";
-import { Mail, Github, Twitter, Linkedin } from "lucide-react";
+import CalendlyWidget from "@/components/calendly/CalendlyWidget";
+import { Mail, Github, Twitter, Linkedin, Calendar } from "lucide-react";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -48,6 +50,21 @@ export default function ContactPage() {
 
         {/* Contact Form */}
         <ContactForm />
+      </div>
+
+      {/* Book a Meeting */}
+      <div className="mt-16 pt-12 border-t border-[--border]">
+        <div className="flex items-center gap-3 mb-2">
+          <Calendar size={20} className="text-[--primary]" />
+          <h2 className="text-2xl font-bold text-[--foreground]">Book a Meeting</h2>
+        </div>
+        <p className="text-[--foreground-muted] mb-8 max-w-xl">
+          Prefer to talk live? Pick a slot on my calendar — no back-and-forth emails needed.{" "}
+          <Link href="/booking" className="text-[--primary] hover:underline">
+            Open full scheduling page →
+          </Link>
+        </p>
+        <CalendlyWidget height={630} />
       </div>
     </div>
   );

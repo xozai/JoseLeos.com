@@ -1,24 +1,27 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Instagram } from "lucide-react";
 import Hero from "@/components/home/Hero";
 import ProjectCard from "@/components/portfolio/ProjectCard";
 import PostCard from "@/components/blog/PostCard";
 import RecCard from "@/components/recommendations/RecCard";
+import InstagramFeed from "@/components/instagram/InstagramFeed";
 import { apolloClient } from "@/lib/graphql/client";
 import { GET_POSTS } from "@/lib/graphql/queries/posts";
 import { GET_PROJECTS } from "@/lib/graphql/queries/projects";
 import { GET_FEATURED_RECOMMENDATIONS } from "@/lib/graphql/queries/recommendations";
 import { filterByAccess } from "@/lib/access";
+import { getInstagramFeed } from "@/lib/instagram";
 import type { PostListItem, ProjectListItem, RecommendationItem } from "@/lib/types";
 
 export const revalidate = 60;
 
 async function getData() {
   try {
-    const [projectsRes, postsRes, recsRes] = await Promise.all([
+    const [projectsRes, postsRes, recsRes, igPosts] = await Promise.all([
       apolloClient.query({ query: GET_PROJECTS }),
       apolloClient.query({ query: GET_POSTS, variables: { first: 4 } }),
       apolloClient.query({ query: GET_FEATURED_RECOMMENDATIONS }),
+      getInstagramFeed(9),
     ]);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -42,14 +45,15 @@ async function getData() {
       featuredProjects: visibleProjects.filter((p) => p.projectFields.featured).slice(0, 3),
       posts: visiblePosts.slice(0, 3),
       recommendations: visibleRecs.slice(0, 6),
+      instagramPosts: igPosts,
     };
   } catch {
-    return { featuredProjects: [], posts: [], recommendations: [] };
+    return { featuredProjects: [], posts: [], recommendations: [], instagramPosts: [] };
   }
 }
 
 export default async function HomePage() {
-  const { featuredProjects, posts, recommendations } = await getData();
+  const { featuredProjects, posts, recommendations, instagramPosts } = await getData();
 
   return (
     <>
@@ -76,6 +80,25 @@ export default async function HomePage() {
               <PostCard key={post.slug} post={post} />
             ))}
           </div>
+        </section>
+      )}
+
+      {/* On Instagram */}
+      {instagramPosts.length > 0 && (
+        <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto border-t border-[--border]">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-2xl font-bold text-[--foreground]">On Instagram</h2>
+            <a
+              href="https://instagram.com/joseleos"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-sm font-medium text-[--foreground-muted] hover:text-[--primary] transition-colors"
+            >
+              <Instagram size={14} />
+              Follow @joseleos <ArrowRight size={14} />
+            </a>
+          </div>
+          <InstagramFeed posts={instagramPosts} />
         </section>
       )}
 

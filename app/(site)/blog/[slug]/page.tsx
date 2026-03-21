@@ -162,7 +162,12 @@ export default async function BlogPostPage({
             </div>
           )}
 
+          {/* Share bar — top (before article body) */}
+          <ShareButtons title={title} slug={slug} />
+
           {content && <ProseContent html={content} />}
+
+          {/* Share bar — bottom (after prose, before reactions) */}
           <ShareButtons title={title} slug={slug} />
           <PostEngagement slug={slug} authenticated={!!session?.user} />
           {categories.nodes[0] && (

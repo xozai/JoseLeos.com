@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { Menu, X, LayoutDashboard, LogOut, LogIn } from "lucide-react";
+import { Menu, X, LayoutDashboard, LogOut, LogIn, Calendar } from "lucide-react";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import { cn } from "@/lib/utils";
 import { signOut } from "next-auth/react";
@@ -55,6 +55,13 @@ export default function NavClient({ session }: NavClientProps) {
               {label}
             </Link>
           ))}
+          <Link
+            href="/booking"
+            className="flex items-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-lg border border-[--border] text-[--foreground-muted] hover:text-[--foreground] hover:border-[--primary] transition-colors"
+          >
+            <Calendar size={13} />
+            Book a Meeting
+          </Link>
           <Link
             href="/contact"
             className="ml-2 text-sm font-medium px-4 py-1.5 rounded-lg bg-[--primary] text-[--primary-foreground] hover:opacity-90 transition-opacity"

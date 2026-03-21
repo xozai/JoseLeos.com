@@ -1,6 +1,6 @@
 import NextAuth from "next-auth";
 import Resend from "next-auth/providers/resend";
-import { PostgresAdapter } from "@auth/pg-adapter";
+import PostgresAdapter from "@auth/pg-adapter";
 import { Pool } from "pg";
 
 export const OWNER_EMAIL = process.env.OWNER_EMAIL!;
