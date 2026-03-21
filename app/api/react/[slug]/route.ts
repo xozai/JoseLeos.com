@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { kv } from "@vercel/kv";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 const VALID_EMOJIS = ["👍", "❤️", "🔥"] as const;
 type Emoji = (typeof VALID_EMOJIS)[number];
@@ -31,6 +32,10 @@ export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
+  // 30 reactions per IP per minute (toggle spam prevention)
+  const limited = await checkRateLimit(req, "react", 30, 60);
+  if (limited) return limited;
+
   const session = await auth();
   if (!session?.user?.email)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

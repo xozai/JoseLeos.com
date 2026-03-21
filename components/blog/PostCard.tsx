@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Badge from "@/components/ui/Badge";
 import { formatDate } from "@/lib/utils";
+import { blurProps } from "@/lib/image";
 import { type PostListItem } from "@/lib/types";
 
 export default function PostCard({ post }: { post: PostListItem }) {
@@ -20,6 +21,7 @@ export default function PostCard({ post }: { post: PostListItem }) {
             fill
             className="object-cover"
             sizes="96px"
+            {...blurProps}
           />
         </div>
       )}

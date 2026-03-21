@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { z } from "zod";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 const resend = new Resend(process.env.RESEND_API_KEY!);
 const AUDIENCE_ID = process.env.RESEND_AUDIENCE_ID ?? "";
@@ -10,6 +11,10 @@ const schema = z.object({
 });
 
 export async function POST(req: NextRequest) {
+  // 3 attempts per IP per hour
+  const limited = await checkRateLimit(req, "subscribe", 3, 3600);
+  if (limited) return limited;
+
   const body = await req.json().catch(() => ({}));
   const result = schema.safeParse(body);
   if (!result.success) {

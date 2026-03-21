@@ -7,6 +7,7 @@ import Badge from "@/components/ui/Badge";
 import ReadingProgress from "@/components/blog/ReadingProgress";
 import TableOfContents from "@/components/blog/TableOfContents";
 import ProseContent from "@/components/blog/ProseContent";
+import { blurProps } from "@/lib/image";
 import { apolloClient } from "@/lib/graphql/client";
 import { GET_POST_BY_SLUG, GET_ALL_POST_SLUGS } from "@/lib/graphql/queries/posts";
 import { formatDate, estimateReadingTime } from "@/lib/utils";
@@ -156,6 +157,7 @@ export default async function BlogPostPage({
                 className="object-cover"
                 priority
                 sizes="(max-width: 768px) 100vw, 768px"
+                {...blurProps}
               />
             </div>
           )}

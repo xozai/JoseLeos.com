@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { kv } from "@vercel/kv";
 import { z } from "zod";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 const schema = z.object({
   name: z.string().min(2),
@@ -12,6 +13,10 @@ const schema = z.object({
 });
 
 export async function POST(req: NextRequest) {
+  // 5 submissions per IP per hour
+  const limited = await checkRateLimit(req, "contact", 5, 3600);
+  if (limited) return limited;
+
   try {
     const body = await req.json();
     const data = schema.parse(body);

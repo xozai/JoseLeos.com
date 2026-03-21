@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ExternalLink, Github, ArrowLeft } from "lucide-react";
 import Badge from "@/components/ui/Badge";
 import ProseContent from "@/components/blog/ProseContent";
+import { blurProps } from "@/lib/image";
 import { apolloClient } from "@/lib/graphql/client";
 import { GET_PROJECT_BY_SLUG, GET_ALL_PROJECT_SLUGS } from "@/lib/graphql/queries/projects";
 import { canAccess } from "@/lib/access";
@@ -140,6 +141,7 @@ export default async function ProjectPage({
             className="object-cover"
             priority
             sizes="(max-width: 768px) 100vw, 768px"
+            {...blurProps}
           />
         </div>
       )}

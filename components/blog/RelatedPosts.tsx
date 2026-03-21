@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { blurProps } from "@/lib/image";
 import { apolloClient } from "@/lib/graphql/client";
 import { GET_POSTS_BY_CATEGORY } from "@/lib/graphql/queries/posts";
 import { filterByAccess } from "@/lib/access";
@@ -48,6 +49,7 @@ export default async function RelatedPosts({ currentSlug, categoryName }: Relate
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
                   sizes="(max-width: 768px) 100vw, 33vw"
+                  {...blurProps}
                 />
               </div>
             )}

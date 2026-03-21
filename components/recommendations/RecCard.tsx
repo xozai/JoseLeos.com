@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { ExternalLink } from "lucide-react";
 import Badge from "@/components/ui/Badge";
+import { blurProps } from "@/lib/image";
 import { type RecommendationItem } from "@/lib/types";
 
 export default function RecCard({ item }: { item: RecommendationItem }) {
@@ -23,6 +24,7 @@ export default function RecCard({ item }: { item: RecommendationItem }) {
             fill
             className="object-cover"
             sizes="56px"
+            {...blurProps}
           />
         ) : (
           <span className="absolute inset-0 flex items-center justify-center text-lg font-bold text-[--foreground-muted]">

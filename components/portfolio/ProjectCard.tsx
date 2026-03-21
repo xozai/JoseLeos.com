@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import Badge from "@/components/ui/Badge";
+import { blurProps } from "@/lib/image";
 import { type ProjectListItem } from "@/lib/types";
 
 export default function ProjectCard({ project }: { project: ProjectListItem }) {
@@ -20,6 +21,7 @@ export default function ProjectCard({ project }: { project: ProjectListItem }) {
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-500"
             sizes="(max-width: 768px) 100vw, 50vw"
+            {...blurProps}
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center text-[--foreground-muted] text-4xl font-bold opacity-10">
