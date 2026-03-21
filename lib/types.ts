@@ -64,17 +64,37 @@ export interface ProjectFull extends ProjectListItem {
 // ─── Recommendations ─────────────────────────────────────
 export type RecCategory = "books" | "tools" | "apps" | "courses" | "podcasts" | "gear";
 
+/** Lightweight shape used in homepage tiles and search results */
 export interface RecommendationItem {
   slug: string;
   title: string;
+  excerpt?: string;
+  date?: string;
   recFields: {
     itemUrl: string;
     itemImage: WPImage | null;
     shortDescription: string;
     affiliateLink?: string;
-    category: RecCategory;
+    category: string;
+    subcategory?: string;
+    rating?: number;        // 1-10 int → displayed as /5 with 0.5 steps
+    priceRange?: string;    // "Free" | "$" | "$$" | "$$$" | "$$$$"
+    verdict?: string;
+    featured?: boolean;
+    lastReviewed?: string;
+    websiteUrl?: string;
+    purchaseUrl?: string;
+    pros?: string[];
+    cons?: string[];
   };
+  featuredImage?: { node: WPImage } | null;
   acfVisibility?: { visibility?: Visibility };
+}
+
+/** Full shape used on the /recommendations/[slug] detail page */
+export interface RecommendationFull extends RecommendationItem {
+  content?: string;
+  categories?: { nodes: { name: string; slug: string }[] };
 }
 
 // ─── Pagination ──────────────────────────────────────────
