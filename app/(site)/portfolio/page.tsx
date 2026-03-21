@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import ProjectCard from "@/components/portfolio/ProjectCard";
-import GatedCard from "@/components/ui/GatedCard";
+import PortfolioGrid from "@/components/portfolio/PortfolioGrid";
 import { apolloClient } from "@/lib/graphql/client";
 import { GET_PROJECTS } from "@/lib/graphql/queries/projects";
 import { auth } from "@/auth";
@@ -35,11 +34,9 @@ export default async function PortfolioPage() {
     return true;
   });
 
-  const teaserProjects = !session?.user
-    ? projects.filter((p) => p.acfVisibility?.visibility === "members")
-    : [];
-
-  const allVisible = [...visibleProjects, ...teaserProjects.map((p) => ({ ...p, _gated: true }))];
+  const teaserCount = !session?.user
+    ? projects.filter((p) => p.acfVisibility?.visibility === "members").length
+    : 0;
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -50,26 +47,13 @@ export default async function PortfolioPage() {
         </p>
       </header>
 
-      {allVisible.length > 0 ? (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {visibleProjects.map((project) => (
-            <ProjectCard key={project.slug} project={project} />
-          ))}
-          {teaserProjects.map((project) => (
-            <GatedCard key={project.slug} type="project" />
-          ))}
-        </div>
+      {visibleProjects.length > 0 || teaserCount > 0 ? (
+        <PortfolioGrid projects={visibleProjects} teaserCount={teaserCount} />
       ) : (
-        <EmptyState message="No projects yet. Check back soon." />
+        <div className="py-24 text-center text-[--foreground-muted]">
+          <p>No projects yet. Check back soon.</p>
+        </div>
       )}
-    </div>
-  );
-}
-
-function EmptyState({ message }: { message: string }) {
-  return (
-    <div className="py-24 text-center text-[--foreground-muted]">
-      <p>{message}</p>
     </div>
   );
 }

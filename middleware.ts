@@ -3,8 +3,9 @@ import { NextResponse } from "next/server";
 
 export default auth((req) => {
   const session = req.auth;
+  const { pathname } = req.nextUrl;
 
-  if (req.nextUrl.pathname.startsWith("/dashboard")) {
+  if (pathname.startsWith("/dashboard") || pathname.startsWith("/account")) {
     if (!session) {
       return NextResponse.redirect(new URL("/login", req.url));
     }
@@ -14,5 +15,5 @@ export default auth((req) => {
 });
 
 export const config = {
-  matcher: ["/dashboard/:path*"],
+  matcher: ["/dashboard/:path*", "/account/:path*"],
 };

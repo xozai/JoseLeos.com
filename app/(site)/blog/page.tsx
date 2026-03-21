@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import PostCard from "@/components/blog/PostCard";
-import GatedCard from "@/components/ui/GatedCard";
+import BlogList from "@/components/blog/BlogList";
 import { apolloClient } from "@/lib/graphql/client";
 import { GET_POSTS } from "@/lib/graphql/queries/posts";
 import { auth } from "@/auth";
@@ -35,10 +34,9 @@ export default async function BlogPage() {
     return true;
   });
 
-  // Members-only posts to show as teaser to logged-out users
-  const teaserPosts = !session?.user
-    ? posts.filter((p) => p.acfVisibility?.visibility === "members")
-    : [];
+  const teaserCount = !session?.user
+    ? posts.filter((p) => p.acfVisibility?.visibility === "members").length
+    : 0;
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -49,15 +47,8 @@ export default async function BlogPage() {
         </p>
       </header>
 
-      {visiblePosts.length > 0 || teaserPosts.length > 0 ? (
-        <div>
-          {visiblePosts.map((post) => (
-            <PostCard key={post.slug} post={post} />
-          ))}
-          {teaserPosts.map((post) => (
-            <GatedCard key={post.slug} type="post" className="mb-6" />
-          ))}
-        </div>
+      {visiblePosts.length > 0 || teaserCount > 0 ? (
+        <BlogList posts={visiblePosts} teaserCount={teaserCount} />
       ) : (
         <div className="py-24 text-center text-[--foreground-muted]">
           <p>No posts yet. Check back soon.</p>

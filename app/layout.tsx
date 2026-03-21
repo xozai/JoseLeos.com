@@ -24,6 +24,9 @@ export const metadata: Metadata = {
     creator: "@joseleos",
   },
   robots: { index: true, follow: true },
+  alternates: {
+    types: { "application/rss+xml": "https://joseLeos.com/feed.xml" },
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

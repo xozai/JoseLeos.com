@@ -7,6 +7,7 @@ import { Menu, X, LayoutDashboard, LogOut, LogIn } from "lucide-react";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import { cn } from "@/lib/utils";
 import { signOut } from "next-auth/react";
+import SearchOverlay from "@/components/ui/SearchOverlay";
 
 const NAV_LINKS = [
   { label: "Portfolio", href: "/portfolio" },
@@ -60,6 +61,7 @@ export default function NavClient({ session }: NavClientProps) {
           >
             Contact
           </Link>
+          <SearchOverlay />
           <ThemeToggle />
 
           {/* Auth controls */}
@@ -75,12 +77,13 @@ export default function NavClient({ session }: NavClientProps) {
                 </Link>
               )}
               <div className="flex items-center gap-1.5">
-                <span
-                  className="w-7 h-7 rounded-full bg-[--primary] text-[--primary-foreground] flex items-center justify-center text-xs font-bold uppercase"
-                  title={session.user.email ?? ""}
+                <Link
+                  href="/account"
+                  className="w-7 h-7 rounded-full bg-[--primary] text-[--primary-foreground] flex items-center justify-center text-xs font-bold uppercase hover:opacity-80 transition-opacity"
+                  title={session.user.email ?? "My Account"}
                 >
                   {initial}
-                </span>
+                </Link>
                 <button
                   onClick={() => signOut({ callbackUrl: "/" })}
                   className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-[--background-secondary] text-[--foreground-muted] hover:text-[--foreground] transition-colors"

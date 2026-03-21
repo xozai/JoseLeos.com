@@ -56,6 +56,28 @@ export const GET_POST_BY_SLUG = gql`
   }
 `;
 
+export const GET_POSTS_BY_CATEGORY = gql`
+  query GetPostsByCategory($categoryName: String!, $first: Int = 4) {
+    posts(first: $first, where: { categoryName: $categoryName }) {
+      nodes {
+        slug
+        title
+        excerpt
+        date
+        categories {
+          nodes { name slug }
+        }
+        featuredImage {
+          node { sourceUrl altText }
+        }
+        acfVisibility {
+          visibility
+        }
+      }
+    }
+  }
+`;
+
 export const GET_ALL_POST_SLUGS = gql`
   query GetAllPostSlugs {
     posts(first: 1000) {
