@@ -16,6 +16,9 @@ export const GET_RECOMMENDATIONS = gql`
             altText
           }
         }
+        acfVisibility {
+          visibility
+        }
       }
     }
   }
@@ -35,6 +38,9 @@ export const GET_FEATURED_RECOMMENDATIONS = gql`
             sourceUrl
             altText
           }
+        }
+        acfVisibility {
+          visibility
         }
       }
     }

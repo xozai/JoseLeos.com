@@ -8,6 +8,7 @@ import { apolloClient } from "@/lib/graphql/client";
 import { GET_POSTS } from "@/lib/graphql/queries/posts";
 import { GET_PROJECTS } from "@/lib/graphql/queries/projects";
 import { GET_FEATURED_RECOMMENDATIONS } from "@/lib/graphql/queries/recommendations";
+import { filterByAccess } from "@/lib/access";
 import type { PostListItem, ProjectListItem, RecommendationItem } from "@/lib/types";
 
 export const revalidate = 60;
@@ -31,10 +32,16 @@ async function getData() {
     const posts: PostListItem[] = bd?.posts?.nodes ?? [];
     const recommendations: RecommendationItem[] = rd?.recommendations?.nodes ?? [];
 
+    const [visibleProjects, visiblePosts, visibleRecs] = await Promise.all([
+      filterByAccess(projects),
+      filterByAccess(posts),
+      filterByAccess(recommendations),
+    ]);
+
     return {
-      featuredProjects: projects.filter((p) => p.projectFields.featured).slice(0, 3),
-      posts: posts.slice(0, 3),
-      recommendations: recommendations.slice(0, 6),
+      featuredProjects: visibleProjects.filter((p) => p.projectFields.featured).slice(0, 3),
+      posts: visiblePosts.slice(0, 3),
+      recommendations: visibleRecs.slice(0, 6),
     };
   } catch {
     return { featuredProjects: [], posts: [], recommendations: [] };

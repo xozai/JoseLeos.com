@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import ProjectCard from "@/components/portfolio/ProjectCard";
+import GatedCard from "@/components/ui/GatedCard";
 import { apolloClient } from "@/lib/graphql/client";
 import { GET_PROJECTS } from "@/lib/graphql/queries/projects";
+import { auth } from "@/auth";
+import { OWNER_EMAIL } from "@/auth";
 import type { ProjectListItem } from "@/lib/types";
 
 export const revalidate = 60;
@@ -23,6 +26,21 @@ export default async function PortfolioPage() {
     /* show empty state if WP is unreachable */
   }
 
+  const session = await auth();
+  const visibleProjects = projects.filter((p) => {
+    const v = p.acfVisibility?.visibility ?? "public";
+    if (v === "public") return true;
+    if (v === "members") return !!session?.user;
+    if (v === "private") return session?.user?.email === OWNER_EMAIL;
+    return true;
+  });
+
+  const teaserProjects = !session?.user
+    ? projects.filter((p) => p.acfVisibility?.visibility === "members")
+    : [];
+
+  const allVisible = [...visibleProjects, ...teaserProjects.map((p) => ({ ...p, _gated: true }))];
+
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
       <header className="mb-12">
@@ -32,10 +50,13 @@ export default async function PortfolioPage() {
         </p>
       </header>
 
-      {projects.length > 0 ? (
+      {allVisible.length > 0 ? (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {projects.map((project) => (
+          {visibleProjects.map((project) => (
             <ProjectCard key={project.slug} project={project} />
+          ))}
+          {teaserProjects.map((project) => (
+            <GatedCard key={project.slug} type="project" />
           ))}
         </div>
       ) : (

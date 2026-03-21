@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Calendar, Clock } from "lucide-react";
@@ -7,6 +7,8 @@ import Badge from "@/components/ui/Badge";
 import { apolloClient } from "@/lib/graphql/client";
 import { GET_POST_BY_SLUG, GET_ALL_POST_SLUGS } from "@/lib/graphql/queries/posts";
 import { formatDate, estimateReadingTime } from "@/lib/utils";
+import { canAccess } from "@/lib/access";
+import { auth } from "@/auth";
 import type { PostFull } from "@/lib/types";
 
 export const revalidate = 60;
@@ -67,6 +69,14 @@ export default async function BlogPostPage({
   const post = await getPost(slug);
 
   if (!post) notFound();
+
+  const visibility = post.acfVisibility?.visibility ?? "public";
+  const allowed = await canAccess(visibility);
+  if (!allowed) {
+    const session = await auth();
+    if (!session) redirect("/login");
+    else notFound();
+  }
 
   const { title, content, date, categories, featuredImage } = post;
   const readingTime = content ? estimateReadingTime(content) : "1 min read";

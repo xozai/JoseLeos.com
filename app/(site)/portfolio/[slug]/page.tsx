@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { ExternalLink, Github, ArrowLeft } from "lucide-react";
 import Badge from "@/components/ui/Badge";
 import { apolloClient } from "@/lib/graphql/client";
 import { GET_PROJECT_BY_SLUG, GET_ALL_PROJECT_SLUGS } from "@/lib/graphql/queries/projects";
+import { canAccess } from "@/lib/access";
+import { auth } from "@/auth";
 import type { ProjectFull } from "@/lib/types";
 
 export const revalidate = 60;
@@ -64,6 +66,14 @@ export default async function ProjectPage({
   const project = await getProject(slug);
 
   if (!project) notFound();
+
+  const visibility = project.acfVisibility?.visibility ?? "public";
+  const allowed = await canAccess(visibility);
+  if (!allowed) {
+    const session = await auth();
+    if (!session) redirect("/login");
+    else notFound();
+  }
 
   const { title, content, featuredImage, projectFields } = project;
 

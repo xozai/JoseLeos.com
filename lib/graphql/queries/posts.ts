@@ -18,6 +18,9 @@ export const GET_POSTS = gql`
         featuredImage {
           node { sourceUrl altText }
         }
+        acfVisibility {
+          visibility
+        }
       }
     }
   }
@@ -45,6 +48,9 @@ export const GET_POST_BY_SLUG = gql`
           name
           avatar { url }
         }
+      }
+      acfVisibility {
+        visibility
       }
     }
   }

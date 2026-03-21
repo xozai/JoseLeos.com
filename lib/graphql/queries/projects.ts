@@ -16,6 +16,9 @@ export const GET_PROJECTS = gql`
           techStack
           featured
         }
+        acfVisibility {
+          visibility
+        }
       }
     }
   }
@@ -36,6 +39,9 @@ export const GET_FEATURED_PROJECTS = gql`
           year
           techStack
           featured
+        }
+        acfVisibility {
+          visibility
         }
       }
     }
@@ -59,6 +65,9 @@ export const GET_PROJECT_BY_SLUG = gql`
         liveUrl
         githubUrl
         featured
+      }
+      acfVisibility {
+        visibility
       }
     }
   }

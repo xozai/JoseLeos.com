@@ -6,6 +6,9 @@ export interface WPImage {
   height?: number;
 }
 
+// ─── Visibility ───────────────────────────────────────────
+export type Visibility = "public" | "members" | "private";
+
 // ─── Blog Posts ──────────────────────────────────────────
 export interface PostListItem {
   slug: string;
@@ -15,6 +18,7 @@ export interface PostListItem {
   readingTime: string;
   categories: { nodes: { name: string; slug: string }[] };
   featuredImage: { node: WPImage } | null;
+  acfVisibility?: { visibility?: Visibility };
 }
 
 export interface PostFull extends PostListItem {
@@ -26,6 +30,7 @@ export interface PostFull extends PostListItem {
     metaDesc: string;
     opengraphImage: WPImage | null;
   };
+  acfVisibility?: { visibility?: Visibility };
 }
 
 // ─── Portfolio Projects ───────────────────────────────────
@@ -40,6 +45,7 @@ export interface ProjectListItem {
     techStack: string[];
     featured: boolean;
   };
+  acfVisibility?: { visibility?: Visibility };
 }
 
 export interface ProjectFull extends ProjectListItem {
@@ -52,6 +58,7 @@ export interface ProjectFull extends ProjectListItem {
     githubUrl: string;
     featured: boolean;
   };
+  acfVisibility?: { visibility?: Visibility };
 }
 
 // ─── Recommendations ─────────────────────────────────────
@@ -67,6 +74,7 @@ export interface RecommendationItem {
     affiliateLink?: string;
     category: RecCategory;
   };
+  acfVisibility?: { visibility?: Visibility };
 }
 
 // ─── Pagination ──────────────────────────────────────────

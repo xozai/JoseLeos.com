@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import PostCard from "@/components/blog/PostCard";
+import GatedCard from "@/components/ui/GatedCard";
 import { apolloClient } from "@/lib/graphql/client";
 import { GET_POSTS } from "@/lib/graphql/queries/posts";
+import { auth } from "@/auth";
+import { OWNER_EMAIL } from "@/auth";
 import type { PostListItem } from "@/lib/types";
 
 export const revalidate = 60;
@@ -23,6 +26,20 @@ export default async function BlogPage() {
     /* show empty state */
   }
 
+  const session = await auth();
+  const visiblePosts = posts.filter((p) => {
+    const v = p.acfVisibility?.visibility ?? "public";
+    if (v === "public") return true;
+    if (v === "members") return !!session?.user;
+    if (v === "private") return session?.user?.email === OWNER_EMAIL;
+    return true;
+  });
+
+  // Members-only posts to show as teaser to logged-out users
+  const teaserPosts = !session?.user
+    ? posts.filter((p) => p.acfVisibility?.visibility === "members")
+    : [];
+
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
       <header className="mb-12">
@@ -32,10 +49,13 @@ export default async function BlogPage() {
         </p>
       </header>
 
-      {posts.length > 0 ? (
+      {visiblePosts.length > 0 || teaserPosts.length > 0 ? (
         <div>
-          {posts.map((post) => (
+          {visiblePosts.map((post) => (
             <PostCard key={post.slug} post={post} />
+          ))}
+          {teaserPosts.map((post) => (
+            <GatedCard key={post.slug} type="post" className="mb-6" />
           ))}
         </div>
       ) : (

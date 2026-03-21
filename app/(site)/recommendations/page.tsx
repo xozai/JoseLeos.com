@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import RecCard from "@/components/recommendations/RecCard";
+import GatedCard from "@/components/ui/GatedCard";
 import { apolloClient } from "@/lib/graphql/client";
 import { GET_RECOMMENDATIONS } from "@/lib/graphql/queries/recommendations";
+import { auth } from "@/auth";
+import { OWNER_EMAIL } from "@/auth";
 import type { RecommendationItem, RecCategory } from "@/lib/types";
 
 export const revalidate = 60;
@@ -39,10 +42,28 @@ export default async function RecommendationsPage({
     /* show empty state */
   }
 
+  const session = await auth();
+  const visibleItems = items.filter((item) => {
+    const v = item.acfVisibility?.visibility ?? "public";
+    if (v === "public") return true;
+    if (v === "members") return !!session?.user;
+    if (v === "private") return session?.user?.email === OWNER_EMAIL;
+    return true;
+  });
+
+  const teaserItems = !session?.user
+    ? items.filter((item) => item.acfVisibility?.visibility === "members")
+    : [];
+
+  const allAccessible = [...visibleItems, ...teaserItems];
+
   const filtered =
     !category || category === "all"
-      ? items
-      : items.filter((item) => item.recFields.category === category);
+      ? allAccessible
+      : allAccessible.filter((item) => item.recFields.category === category);
+
+  const filteredVisible = filtered.filter((item) => visibleItems.includes(item));
+  const filteredTeaser = filtered.filter((item) => teaserItems.includes(item));
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -70,10 +91,13 @@ export default async function RecommendationsPage({
         ))}
       </div>
 
-      {filtered.length > 0 ? (
+      {filteredVisible.length > 0 || filteredTeaser.length > 0 ? (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filtered.map((item) => (
+          {filteredVisible.map((item) => (
             <RecCard key={item.slug} item={item} />
+          ))}
+          {filteredTeaser.map((item) => (
+            <GatedCard key={item.slug} type="recommendation" />
           ))}
         </div>
       ) : (
