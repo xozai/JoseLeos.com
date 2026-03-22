@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
-import BlogList from "@/components/blog/BlogList";
 import { apolloClient } from "@/lib/graphql/client";
 import { GET_POSTS } from "@/lib/graphql/queries/posts";
 import { auth } from "@/auth";
 import { OWNER_EMAIL } from "@/auth";
+import PostCard from "@/components/blog/PostCard";
+import GatedCard from "@/components/ui/GatedCard";
+import BlogPagination from "@/components/blog/BlogPagination";
 import type { PostListItem } from "@/lib/types";
 
 export const revalidate = 60;
@@ -13,14 +15,27 @@ export const metadata: Metadata = {
   description: "Articles, essays, and notes by Jose Leos on design, development, and more.",
 };
 
-export default async function BlogPage() {
+export default async function BlogPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ after?: string }>;
+}) {
+  const { after } = await searchParams;
+
   let posts: PostListItem[] = [];
+  let hasNextPage = false;
+  let endCursor: string | null = null;
 
   try {
-    const res = await apolloClient.query({ query: GET_POSTS, variables: { first: 20 } });
+    const res = await apolloClient.query({
+      query: GET_POSTS,
+      variables: { first: 20, after: after ?? null },
+    });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const data = res.data as any;
     posts = data?.posts?.nodes ?? [];
+    hasNextPage = data?.posts?.pageInfo?.hasNextPage ?? false;
+    endCursor = data?.posts?.pageInfo?.endCursor ?? null;
   } catch {
     /* show empty state */
   }
@@ -48,7 +63,21 @@ export default async function BlogPage() {
       </header>
 
       {visiblePosts.length > 0 || teaserCount > 0 ? (
-        <BlogList posts={visiblePosts} teaserCount={teaserCount} />
+        <div>
+          {visiblePosts.map((post) => (
+            <PostCard key={post.slug} post={post} />
+          ))}
+          {teaserCount > 0 &&
+            Array.from({ length: teaserCount }).map((_, i) => (
+              <GatedCard key={`teaser-${i}`} type="post" className="mb-6" />
+            ))}
+          <BlogPagination
+            basePath="/blog"
+            hasNextPage={hasNextPage}
+            endCursor={endCursor}
+            hasPrevPage={!!after}
+          />
+        </div>
       ) : (
         <div className="py-24 text-center text-[--foreground-muted]">
           <p>No posts yet. Check back soon.</p>

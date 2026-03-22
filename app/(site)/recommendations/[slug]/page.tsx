@@ -79,11 +79,15 @@ export async function generateMetadata({
     rec.excerpt?.replace(/<[^>]+>/g, "").slice(0, 160) ??
     "";
 
+  const ogParams = new URLSearchParams({
+    title: rec.title,
+    type: "review",
+    category: rec.recFields.category ?? "",
+    ...(rec.recFields.rating != null ? { rating: String(rec.recFields.rating) } : {}),
+  });
   const ogImage = rec.featuredImage?.node?.sourceUrl
     ? [{ url: rec.featuredImage.node.sourceUrl }]
-    : [{
-        url: `/api/og?title=${encodeURIComponent(rec.title)}&type=review&category=${encodeURIComponent(rec.recFields.category ?? "")}`,
-      }];
+    : [{ url: `/api/og?${ogParams.toString()}` }];
 
   return {
     title: rec.title,
