@@ -12,8 +12,10 @@ const FOOTER_LINKS = [
   { label: "Portfolio", href: "/portfolio" },
   { label: "Blog", href: "/blog" },
   { label: "Recommendations", href: "/recommendations" },
+  { label: "Newsletter", href: "/newsletter" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
+  { label: "Book a Meeting", href: "/booking" },
   { label: "Uses", href: "/uses" },
 ];
 

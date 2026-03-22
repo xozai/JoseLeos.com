@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, Calendar, Clock } from "lucide-react";
+import { ArrowLeft, Calendar, Clock, Tag } from "lucide-react";
 import Badge from "@/components/ui/Badge";
 import ReadingProgress from "@/components/blog/ReadingProgress";
 import TableOfContents from "@/components/blog/TableOfContents";
@@ -92,7 +92,7 @@ export default async function BlogPostPage({
     else notFound();
   }
 
-  const { title, content, date, categories, featuredImage } = post;
+  const { title, content, date, categories, tags, featuredImage } = post;
   const readingTime = content ? estimateReadingTime(content) : "1 min read";
 
   return (
@@ -123,9 +123,15 @@ export default async function BlogPostPage({
           </Link>
 
           <header className="mb-8">
-            <div className="flex flex-wrap items-center gap-3 mb-4">
+            <div className="flex flex-wrap items-center gap-2 mb-4">
               {categories.nodes.slice(0, 2).map((cat) => (
-                <Badge key={cat.slug} variant="outline">{cat.name}</Badge>
+                <Link
+                  key={cat.slug}
+                  href={`/blog/category/${cat.slug}`}
+                  className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border border-[--primary]/40 text-[--primary] hover:bg-[--primary]/10 transition-colors"
+                >
+                  {cat.name}
+                </Link>
               ))}
             </div>
 
@@ -166,6 +172,22 @@ export default async function BlogPostPage({
           <ShareButtons title={title} slug={slug} />
 
           {content && <ProseContent html={content} />}
+
+          {/* Tags */}
+          {tags?.nodes && tags.nodes.length > 0 && (
+            <div className="flex flex-wrap items-center gap-2 mt-8 pt-6 border-t border-[--border]">
+              <Tag size={13} className="text-[--foreground-muted] shrink-0" />
+              {tags.nodes.map((tag) => (
+                <Link
+                  key={tag.slug}
+                  href={`/blog/tag/${tag.slug}`}
+                  className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border border-[--border] text-[--foreground-muted] hover:text-[--primary] hover:border-[--primary] transition-colors"
+                >
+                  #{tag.name}
+                </Link>
+              ))}
+            </div>
+          )}
 
           {/* Share bar — bottom (after prose, before reactions) */}
           <ShareButtons title={title} slug={slug} />

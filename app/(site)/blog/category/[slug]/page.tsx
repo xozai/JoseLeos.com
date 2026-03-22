@@ -39,7 +39,10 @@ export async function generateMetadata({
   return {
     title: `${label} — Blog`,
     description: `All posts in the ${label} category.`,
-    alternates: { canonical: `/blog/category/${slug}` },
+    alternates: {
+      canonical: `/blog/category/${slug}`,
+      types: { "application/rss+xml": "/feed.xml" },
+    },
   };
 }
 
@@ -89,8 +92,21 @@ export default async function BlogCategoryPage({
       ? posts.filter((p) => p.acfVisibility?.visibility === "members").length
       : 0;
 
+  const breadcrumb = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Blog", item: "https://joseLeos.com/blog" },
+      { "@type": "ListItem", position: 2, name: label, item: `https://joseLeos.com/blog/category/${slug}` },
+    ],
+  };
+
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+      />
       <Link
         href="/blog"
         className="inline-flex items-center gap-1.5 text-sm text-[--foreground-muted] hover:text-[--foreground] mb-8 transition-colors"

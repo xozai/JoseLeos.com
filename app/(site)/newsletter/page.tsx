@@ -55,8 +55,21 @@ export default async function NewsletterPage({
     return true;
   });
 
+  const breadcrumb = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://joseLeos.com" },
+      { "@type": "ListItem", position: 2, name: "Newsletter", item: "https://joseLeos.com/newsletter" },
+    ],
+  };
+
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+      />
       <header className="mb-12">
         <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-[--primary] mb-2">
           <Mail size={13} /> Newsletter

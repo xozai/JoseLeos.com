@@ -13,6 +13,10 @@ export const revalidate = 60;
 export const metadata: Metadata = {
   title: "Blog",
   description: "Articles, essays, and notes by Jose Leos on design, development, and more.",
+  alternates: {
+    canonical: "/blog",
+    types: { "application/rss+xml": "/feed.xml" },
+  },
 };
 
 export default async function BlogPage({
