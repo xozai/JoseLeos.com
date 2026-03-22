@@ -6,13 +6,15 @@ import { Twitter, Linkedin, Facebook, Link2, Check } from "lucide-react";
 interface ShareButtonsProps {
   title: string;
   slug: string;
+  /** URL path section — defaults to "blog". Pass "recommendations" for review pages. */
+  section?: string;
 }
 
-export default function ShareButtons({ title, slug }: ShareButtonsProps) {
+export default function ShareButtons({ title, slug, section = "blog" }: ShareButtonsProps) {
   const [copied, setCopied] = useState(false);
 
   const base = process.env.NEXT_PUBLIC_SITE_URL ?? "https://joseleos.com";
-  const url = `${base}/blog/${slug}`;
+  const url = `${base}/${section}/${slug}`;
 
   function copyLink() {
     navigator.clipboard.writeText(url).then(() => {

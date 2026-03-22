@@ -145,12 +145,13 @@ export const GET_RECOMMENDATION_BY_SLUG = gql`
   }
 `;
 
-/** Minimal list for generateStaticParams */
+/** Minimal list for generateStaticParams and sitemap */
 export const GET_ALL_RECOMMENDATION_SLUGS = gql`
   query GetAllRecommendationSlugs {
     recommendations(first: 500) {
       nodes {
         slug
+        modified
       }
     }
   }

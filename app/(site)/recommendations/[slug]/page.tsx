@@ -176,7 +176,7 @@ export default async function RecommendationDetailPage({
       </div>
 
       {/* Share — top */}
-      <ShareButtons title={title} slug={`recommendations/${slug}`} />
+      <ShareButtons title={title} slug={slug} section="recommendations" />
 
       {/* Verdict */}
       {verdict && (
@@ -236,7 +236,7 @@ export default async function RecommendationDetailPage({
       )}
 
       {/* Share — bottom */}
-      <ShareButtons title={title} slug={`recommendations/${slug}`} />
+      <ShareButtons title={title} slug={slug} section="recommendations" />
 
       {/* Where to Get It */}
       {(websiteUrl || buyUrl) && (

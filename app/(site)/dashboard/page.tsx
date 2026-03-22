@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ExternalLink, Globe, Lock, Users, Eye, Mail, TrendingUp } from "lucide-react";
+import { ExternalLink, Globe, Lock, Users, Eye, Mail, TrendingUp, Star } from "lucide-react";
 import { apolloClient } from "@/lib/graphql/client";
 import { GET_POSTS } from "@/lib/graphql/queries/posts";
 import { GET_PROJECTS } from "@/lib/graphql/queries/projects";
@@ -142,12 +142,12 @@ export default async function DashboardPage() {
           Content Overview
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-          <StatCard label="Total Posts" value={posts.length} />
-          <StatCard label="Members Posts" value={count(posts, "members")} />
-          <StatCard label="Private Posts" value={count(posts, "private")} />
-          <StatCard label="Total Projects" value={projects.length} />
-          <StatCard label="Members Projects" value={count(projects, "members")} />
-          <StatCard label="Private Projects" value={count(projects, "private")} />
+          <StatCard label="Total Posts"      value={posts.length} />
+          <StatCard label="Members Posts"    value={count(posts, "members")} />
+          <StatCard label="Private Posts"    value={count(posts, "private")} />
+          <StatCard label="Total Projects"   value={projects.length} />
+          <StatCard label="Total Reviews"    value={recs.length} icon={Star} />
+          <StatCard label="Featured Reviews" value={recs.filter((r) => r.recFields.featured).length} />
         </div>
       </section>
 
@@ -244,9 +244,10 @@ export default async function DashboardPage() {
         title="Recommendations"
         items={recs.map((r) => ({
           title: r.title,
-          href: `/recommendations`,
+          href: `/recommendations/${r.slug}`,
           editUrl: `${WP_ADMIN}/post.php?action=edit`,
           visibility: r.acfVisibility?.visibility ?? "public",
+          meta: r.recFields.category,
         }))}
       />
     </div>
@@ -258,7 +259,7 @@ function ContentSection({
   items,
 }: {
   title: string;
-  items: { title: string; href: string; editUrl: string; visibility: Visibility }[];
+  items: { title: string; href: string; editUrl: string; visibility: Visibility; meta?: string }[];
 }) {
   return (
     <section className="mb-10">
@@ -282,6 +283,11 @@ function ContentSection({
                 >
                   {item.title}
                 </Link>
+                {item.meta && (
+                  <span className="hidden sm:inline text-xs text-[--foreground-muted] shrink-0">
+                    {item.meta}
+                  </span>
+                )}
               </div>
               <a
                 href={item.editUrl}
