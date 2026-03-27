@@ -1,0 +1,53 @@
+import { NextRequest, NextResponse } from "next/server";
+import { Resend } from "resend";
+import { kv } from "@vercel/kv";
+import { z } from "zod";
+import { checkRateLimit } from "@/lib/rate-limit";
+
+const schema = z.object({
+  name: z.string().min(2),
+  email: z.string().email(),
+  subject: z.string().min(3),
+  message: z.string().min(20),
+  honeypot: z.string().max(0),
+});
+
+export async function POST(req: NextRequest) {
+  // 5 submissions per IP per hour
+  const limited = await checkRateLimit(req, "contact", 5, 3600);
+  if (limited) return limited;
+
+  try {
+    const body = await req.json();
+    const data = schema.parse(body);
+
+    const resend = new Resend(process.env.RESEND_API_KEY);
+
+    await resend.emails.send({
+      from: "contact@joseLeos.com",
+      to: process.env.CONTACT_EMAIL_TO ?? "jose@joseLeos.com",
+      replyTo: data.email,
+      subject: `[joseLeos.com] ${data.subject}`,
+      text: `From: ${data.name} <${data.email}>\n\n${data.message}`,
+    });
+
+    // Persist to KV for the owner dashboard (keep the last 100)
+    try {
+      const entry = JSON.stringify({
+        name: data.name,
+        email: data.email,
+        subject: data.subject,
+        message: data.message,
+        date: new Date().toISOString(),
+      });
+      await kv.lpush("contacts", entry);
+      await kv.ltrim("contacts", 0, 99);
+    } catch {
+      /* non-fatal — email was already sent */
+    }
+
+    return NextResponse.json({ ok: true });
+  } catch {
+    return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+  }
+}
