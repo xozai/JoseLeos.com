@@ -52,8 +52,23 @@ async function getData() {
       filterByAccess(latestRecs),
     ]);
 
+    // Home page: up to 2 in-progress first, then fill with featured completed up to 4
+    const inProgress = visibleProjects.filter(
+      (p) => p.projectFields.projectStatus === "in-progress"
+    ).slice(0, 2);
+    const featuredCompleted = visibleProjects.filter(
+      (p) =>
+        p.projectFields.featured &&
+        p.projectFields.projectStatus !== "in-progress" &&
+        p.projectFields.projectStatus !== "paused"
+    );
+    const homeProjects = [
+      ...inProgress,
+      ...featuredCompleted.filter((p) => !inProgress.find((a) => a.slug === p.slug)),
+    ].slice(0, 4);
+
     return {
-      featuredProjects: visibleProjects.filter((p) => p.projectFields.featured).slice(0, 3),
+      featuredProjects: homeProjects,
       posts:            visiblePosts.slice(0, 3),
       recommendations:  visibleRecs.slice(0, 6),
       latestRecs:       visibleLatest.slice(0, 3),
@@ -71,11 +86,11 @@ export default async function HomePage() {
     <>
       <Hero />
 
-      {/* Featured Work */}
+      {/* Projects */}
       {featuredProjects.length > 0 && (
         <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
-          <SectionHeader title="Featured Work" href="/portfolio" />
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <SectionHeader title="Projects" href="/portfolio" linkLabel="View all projects" />
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {featuredProjects.map((project) => (
               <ProjectCard key={project.slug} project={project} />
             ))}
@@ -184,7 +199,15 @@ export default async function HomePage() {
   );
 }
 
-function SectionHeader({ title, href }: { title: string; href: string }) {
+function SectionHeader({
+  title,
+  href,
+  linkLabel = "View all",
+}: {
+  title: string;
+  href: string;
+  linkLabel?: string;
+}) {
   return (
     <div className="flex items-center justify-between mb-8">
       <h2 className="text-2xl font-bold text-[--foreground]">{title}</h2>
@@ -192,7 +215,7 @@ function SectionHeader({ title, href }: { title: string; href: string }) {
         href={href}
         className="flex items-center gap-1.5 text-sm font-medium text-[--foreground-muted] hover:text-[--primary] transition-colors"
       >
-        View all <ArrowRight size={14} />
+        {linkLabel} <ArrowRight size={14} />
       </Link>
     </div>
   );

@@ -34,6 +34,13 @@ export interface PostFull extends PostListItem {
 }
 
 // ─── Portfolio Projects ───────────────────────────────────
+export type ProjectStatus = "completed" | "in-progress" | "paused" | "archived";
+
+export interface ProjectCollaborator {
+  name: string;
+  url?: string;
+}
+
 export interface ProjectListItem {
   slug: string;
   title: string;
@@ -44,6 +51,11 @@ export interface ProjectListItem {
     year: string;
     techStack: string[];
     featured: boolean;
+    projectStatus: ProjectStatus | null;
+    projectStartDate: string | null;
+    projectEndDate: string | null;
+    projectCategory: string | null;
+    projectImpact: string | null;
   };
   acfVisibility?: { visibility?: Visibility };
 }
@@ -57,6 +69,13 @@ export interface ProjectFull extends ProjectListItem {
     liveUrl: string;
     githubUrl: string;
     featured: boolean;
+    projectStatus: ProjectStatus | null;
+    projectStartDate: string | null;
+    projectEndDate: string | null;
+    projectCategory: string | null;
+    projectImpact: string | null;
+    projectCollaborators: ProjectCollaborator[] | null;
+    projectGallery: { sourceUrl: string; altText: string }[] | null;
   };
   acfVisibility?: { visibility?: Visibility };
 }

@@ -54,12 +54,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     const projectRoutes: MetadataRoute.Sitemap = (
       projectsData?.portfolioProjects?.nodes ?? []
-    ).map((p: { slug: string; modified?: string }) => ({
-      url: `${BASE}/portfolio/${p.slug}`,
-      lastModified: p.modified ? new Date(p.modified) : now,
-      priority: 0.8,
-      changeFrequency: "monthly" as const,
-    }));
+    )
+      .filter(
+        (p: { projectFields?: { projectStatus?: string } }) =>
+          p.projectFields?.projectStatus !== "archived"
+      )
+      .map(
+        (p: { slug: string; modified?: string; projectFields?: { projectStatus?: string } }) => {
+          const status = p.projectFields?.projectStatus;
+          const isActive = status === "in-progress" || status === "paused";
+          return {
+            url: `${BASE}/portfolio/${p.slug}`,
+            lastModified: p.modified ? new Date(p.modified) : now,
+            priority: isActive ? 0.7 : 0.6,
+            changeFrequency: isActive ? ("weekly" as const) : ("monthly" as const),
+          };
+        }
+      );
 
     const recRoutes: MetadataRoute.Sitemap = (
       recsData?.recommendations?.nodes ?? []
