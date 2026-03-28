@@ -6,7 +6,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
   return (
     <>
       <Nav />
-      <main className="min-h-screen">
+      <main id="main-content" className="min-h-screen">
         <PageTransition>{children}</PageTransition>
       </main>
       <Footer />

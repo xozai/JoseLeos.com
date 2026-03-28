@@ -3,8 +3,7 @@ import { apolloClient } from "@/lib/graphql/client";
 import { GET_POST_SLUGS_WITH_DATES, GET_ALL_CATEGORY_SLUGS, GET_ALL_TAG_SLUGS } from "@/lib/graphql/queries/posts";
 import { GET_PROJECT_SLUGS_WITH_DATES } from "@/lib/graphql/queries/projects";
 import { GET_ALL_RECOMMENDATION_SLUGS } from "@/lib/graphql/queries/recommendations";
-
-const BASE = "https://joseLeos.com";
+import { SITE_URL as BASE } from "@/lib/site";
 const now = new Date();
 
 const staticRoutes: MetadataRoute.Sitemap = [

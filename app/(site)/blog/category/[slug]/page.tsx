@@ -13,6 +13,7 @@ import PostCard from "@/components/blog/PostCard";
 import GatedCard from "@/components/ui/GatedCard";
 import BlogPagination from "@/components/blog/BlogPagination";
 import type { PostListItem } from "@/lib/types";
+import { SITE_URL } from "@/lib/site";
 
 export const revalidate = 60;
 
@@ -96,8 +97,8 @@ export default async function BlogCategoryPage({
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Blog", item: "https://joseLeos.com/blog" },
-      { "@type": "ListItem", position: 2, name: label, item: `https://joseLeos.com/blog/category/${slug}` },
+      { "@type": "ListItem", position: 1, name: "Blog", item: `${SITE_URL}/blog` },
+      { "@type": "ListItem", position: 2, name: label, item: `${SITE_URL}/blog/category/${slug}` },
     ],
   };
 
