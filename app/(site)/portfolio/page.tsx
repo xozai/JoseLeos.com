@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import PortfolioGrid from "@/components/portfolio/PortfolioGrid";
+import CategoryFilterBar from "@/components/portfolio/CategoryFilterBar";
+import ProjectCard from "@/components/portfolio/ProjectCard";
 import { apolloClient } from "@/lib/graphql/client";
 import { GET_PROJECTS } from "@/lib/graphql/queries/projects";
 import { auth } from "@/auth";
@@ -13,7 +15,12 @@ export const metadata: Metadata = {
   description: "Projects and work by Jose Leos — design, development, and everything in between.",
 };
 
-export default async function PortfolioPage() {
+export default async function PortfolioPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ category?: string }>;
+}) {
+  const { category } = await searchParams;
   let projects: ProjectListItem[] = [];
 
   try {
@@ -34,8 +41,47 @@ export default async function PortfolioPage() {
     return true;
   });
 
+  // Derive unique categories from all visible non-archived projects
+  const allCategories = Array.from(
+    new Set(
+      visibleProjects
+        .filter((p) => p.projectFields.projectStatus !== "archived")
+        .map((p) => p.projectFields.projectCategory)
+        .filter((c): c is string => !!c)
+    )
+  );
+
+  // Apply category filter
+  const filteredProjects = category
+    ? visibleProjects.filter((p) => p.projectFields.projectCategory === category)
+    : visibleProjects;
+
+  // Split into active vs completed (exclude archived from display)
+  const activeProjects = filteredProjects.filter(
+    (p) =>
+      p.projectFields.projectStatus === "in-progress" ||
+      p.projectFields.projectStatus === "paused"
+  );
+
+  const completedProjects = filteredProjects.filter(
+    (p) => p.projectFields.projectStatus === "completed"
+  );
+
+  // Projects with no status set fall through to completed section
+  const untaggedProjects = filteredProjects.filter(
+    (p) => !p.projectFields.projectStatus
+  );
+
+  const completedAndUntagged = [...completedProjects, ...untaggedProjects];
+
+  // Gated teasers count (members-only completed projects shown to anonymous users)
   const teaserCount = !session?.user
-    ? projects.filter((p) => p.acfVisibility?.visibility === "members").length
+    ? projects.filter(
+        (p) =>
+          p.acfVisibility?.visibility === "members" &&
+          p.projectFields.projectStatus !== "in-progress" &&
+          p.projectFields.projectStatus !== "paused"
+      ).length
     : 0;
 
   return (
@@ -47,13 +93,41 @@ export default async function PortfolioPage() {
         </p>
       </header>
 
-      {visibleProjects.length > 0 || teaserCount > 0 ? (
-        <PortfolioGrid projects={visibleProjects} teaserCount={teaserCount} />
-      ) : (
-        <div className="py-24 text-center text-[--foreground-muted]">
-          <p>No projects yet. Check back soon.</p>
-        </div>
+      <CategoryFilterBar categories={allCategories} active={category} />
+
+      {/* Currently Building */}
+      {activeProjects.length > 0 && (
+        <section className="mb-16">
+          <h2 className="text-xl font-semibold text-[--foreground] mb-6">Currently Building</h2>
+          {/* Horizontal scroll on mobile, 2-col grid on desktop */}
+          <div className="flex gap-5 overflow-x-auto pb-2 sm:pb-0 sm:grid sm:grid-cols-2 sm:overflow-visible">
+            {activeProjects.map((project) => (
+              <div key={project.slug} className="min-w-[280px] sm:min-w-0">
+                <ProjectCard project={project} />
+              </div>
+            ))}
+          </div>
+        </section>
       )}
+
+      {/* Completed Work */}
+      {(completedAndUntagged.length > 0 || teaserCount > 0) && (
+        <section>
+          {activeProjects.length > 0 && (
+            <h2 className="text-xl font-semibold text-[--foreground] mb-6">Completed Work</h2>
+          )}
+          <PortfolioGrid projects={completedAndUntagged} teaserCount={teaserCount} />
+        </section>
+      )}
+
+      {/* Empty state when filter returns nothing */}
+      {activeProjects.length === 0 &&
+        completedAndUntagged.length === 0 &&
+        teaserCount === 0 && (
+          <div className="py-24 text-center text-[--foreground-muted]">
+            <p>No projects in this category.</p>
+          </div>
+        )}
     </div>
   );
 }

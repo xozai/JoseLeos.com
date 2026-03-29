@@ -2,8 +2,7 @@ import { apolloClient } from "@/lib/graphql/client";
 import { GET_POSTS } from "@/lib/graphql/queries/posts";
 import { stripHtml, truncate } from "@/lib/utils";
 import type { PostListItem } from "@/lib/types";
-
-const BASE = "https://joseLeos.com";
+import { SITE_URL as BASE } from "@/lib/site";
 
 export const revalidate = 3600; // refresh hourly
 

@@ -1,5 +1,8 @@
 import { ImageResponse } from "next/og";
 import { NextRequest } from "next/server";
+import { SITE_URL } from "@/lib/site";
+
+const SITE_HOSTNAME = new URL(SITE_URL).hostname;
 
 export const runtime = "edge";
 
@@ -7,8 +10,8 @@ const TYPE_LABEL: Record<string, string> = {
   blog: "Blog Post",
   portfolio: "Case Study",
   review: "Review",
-  home: "joseLeos.com",
-  page: "joseLeos.com",
+  home: SITE_HOSTNAME,
+  page: SITE_HOSTNAME,
 };
 
 function formatOgDate(dateStr: string | null): string | null {
@@ -45,7 +48,7 @@ export async function GET(req: NextRequest) {
   const readingTime = searchParams.get("readingTime");
   const rating = searchParams.get("rating");
 
-  const typeLabel = TYPE_LABEL[type] ?? "joseLeos.com";
+  const typeLabel = TYPE_LABEL[type] ?? SITE_HOSTNAME;
   const formattedDate = formatOgDate(dateStr);
   const stars = type === "review" ? renderStars(rating) : null;
 
@@ -144,7 +147,7 @@ export async function GET(req: NextRequest) {
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
               <span style={{ color: "#f0f0f0", fontSize: 17, fontWeight: 600 }}>Jose Leos</span>
-              <span style={{ color: "#6b7280", fontSize: 14 }}>joseLeos.com</span>
+              <span style={{ color: "#6b7280", fontSize: 14 }}>{SITE_HOSTNAME}</span>
             </div>
           </div>
 

@@ -15,6 +15,11 @@ export const GET_PROJECTS = gql`
           year
           techStack
           featured
+          projectStatus
+          projectStartDate
+          projectEndDate
+          projectCategory
+          projectImpact
         }
         acfVisibility {
           visibility
@@ -39,6 +44,11 @@ export const GET_FEATURED_PROJECTS = gql`
           year
           techStack
           featured
+          projectStatus
+          projectStartDate
+          projectEndDate
+          projectCategory
+          projectImpact
         }
         acfVisibility {
           visibility
@@ -65,6 +75,19 @@ export const GET_PROJECT_BY_SLUG = gql`
         liveUrl
         githubUrl
         featured
+        projectStatus
+        projectStartDate
+        projectEndDate
+        projectCategory
+        projectImpact
+        projectCollaborators {
+          collabName
+          collabUrl
+        }
+        projectGallery {
+          sourceUrl
+          altText
+        }
       }
       acfVisibility {
         visibility
@@ -76,7 +99,10 @@ export const GET_PROJECT_BY_SLUG = gql`
 export const GET_ALL_PROJECT_SLUGS = gql`
   query GetAllProjectSlugs {
     portfolioProjects(first: 1000) {
-      nodes { slug }
+      nodes {
+        slug
+        projectFields { projectStatus }
+      }
     }
   }
 `;
@@ -84,7 +110,11 @@ export const GET_ALL_PROJECT_SLUGS = gql`
 export const GET_PROJECT_SLUGS_WITH_DATES = gql`
   query GetProjectSlugsWithDates {
     portfolioProjects(first: 1000) {
-      nodes { slug modified }
+      nodes {
+        slug
+        modified
+        projectFields { projectStatus }
+      }
     }
   }
 `;

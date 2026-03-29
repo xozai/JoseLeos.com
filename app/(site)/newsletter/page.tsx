@@ -8,6 +8,7 @@ import { OWNER_EMAIL } from "@/auth";
 import PostCard from "@/components/blog/PostCard";
 import BlogPagination from "@/components/blog/BlogPagination";
 import type { PostListItem } from "@/lib/types";
+import { SITE_URL } from "@/lib/site";
 
 export const revalidate = 60;
 
@@ -59,8 +60,8 @@ export default async function NewsletterPage({
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "https://joseLeos.com" },
-      { "@type": "ListItem", position: 2, name: "Newsletter", item: "https://joseLeos.com/newsletter" },
+      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "Newsletter", item: `${SITE_URL}/newsletter` },
     ],
   };
 
@@ -80,7 +81,7 @@ export default async function NewsletterPage({
         </p>
         <div className="flex flex-wrap items-center gap-3">
           <Link
-            href="/contact#newsletter"
+            href="/subscribe"
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[--primary] text-[--primary-foreground] text-sm font-semibold hover:opacity-90 transition-opacity"
           >
             <Mail size={14} /> Subscribe
@@ -118,7 +119,7 @@ export default async function NewsletterPage({
             Subscribe to be notified when the first one drops.
           </p>
           <Link
-            href="/contact#newsletter"
+            href="/subscribe"
             className="inline-flex items-center gap-2 mt-5 px-4 py-2 rounded-lg border border-[--border] text-sm font-medium text-[--foreground-muted] hover:text-[--foreground] transition-colors"
           >
             Subscribe <ExternalLink size={12} />
