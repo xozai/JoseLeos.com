@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Menu, X, LayoutDashboard, LogOut, LogIn } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import { cn } from "@/lib/utils";
 import { signOut } from "next-auth/react";
@@ -125,56 +126,64 @@ export default function NavClient({ session }: NavClientProps) {
       </div>
 
       {/* Mobile Menu */}
-      {mobileOpen && (
-        <div className="md:hidden border-t border-[--border] bg-[--background] px-4 pb-4 pt-2 space-y-1">
-          {[...NAV_LINKS, { label: "Contact", href: "/contact" }].map(({ label, href }) => (
-            <Link
-              key={href}
-              href={href}
-              onClick={() => setMobileOpen(false)}
-              className={cn(
-                "block px-3 py-2 rounded-[--radius-md] text-sm font-bold transition-colors",
-                pathname.startsWith(href)
-                  ? "bg-[--background-secondary] text-[--foreground]"
-                  : "text-[--foreground-muted] hover:bg-[--background-secondary] hover:text-[--foreground]"
-              )}
-            >
-              {label}
-            </Link>
-          ))}
-
-          {session?.user ? (
-            <>
-              {session.user.isOwner && (
-                <Link
-                  href="/dashboard"
-                  onClick={() => setMobileOpen(false)}
-                  className="flex items-center gap-2 px-3 py-2 rounded-[--radius-md] text-sm font-bold text-[--foreground-muted] hover:bg-[--background-secondary] hover:text-[--foreground] transition-colors"
-                >
-                  <LayoutDashboard size={15} />
-                  Dashboard
-                </Link>
-              )}
-              <button
-                onClick={() => signOut({ callbackUrl: "/" })}
-                className="flex items-center gap-2 w-full px-3 py-2 rounded-[--radius-md] text-sm font-bold text-[--foreground-muted] hover:bg-[--background-secondary] hover:text-[--foreground] transition-colors"
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.18, ease: "easeOut" }}
+            className="md:hidden border-t border-[--border] bg-[--background] px-4 pb-4 pt-2 space-y-1"
+          >
+            {[...NAV_LINKS, { label: "Contact", href: "/contact" }].map(({ label, href }) => (
+              <Link
+                key={href}
+                href={href}
+                onClick={() => setMobileOpen(false)}
+                className={cn(
+                  "block px-3 py-2 rounded-[--radius-md] text-sm font-bold transition-colors",
+                  pathname.startsWith(href)
+                    ? "bg-[--background-secondary] text-[--foreground]"
+                    : "text-[--foreground-muted] hover:bg-[--background-secondary] hover:text-[--foreground]"
+                )}
               >
-                <LogOut size={15} />
-                Sign out
-              </button>
-            </>
-          ) : (
-            <Link
-              href="/login"
-              onClick={() => setMobileOpen(false)}
-              className="flex items-center gap-2 px-3 py-2 rounded-[--radius-md] text-sm font-bold text-[--foreground-muted] hover:bg-[--background-secondary] hover:text-[--foreground] transition-colors"
-            >
-              <LogIn size={15} />
-              Sign in
-            </Link>
-          )}
-        </div>
-      )}
+                {label}
+              </Link>
+            ))}
+
+            {session?.user ? (
+              <>
+                {session.user.isOwner && (
+                  <Link
+                    href="/dashboard"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center gap-2 px-3 py-2 rounded-[--radius-md] text-sm font-bold text-[--foreground-muted] hover:bg-[--background-secondary] hover:text-[--foreground] transition-colors"
+                  >
+                    <LayoutDashboard size={15} />
+                    Dashboard
+                  </Link>
+                )}
+                <button
+                  onClick={() => signOut({ callbackUrl: "/" })}
+                  className="flex items-center gap-2 w-full px-3 py-2 rounded-[--radius-md] text-sm font-bold text-[--foreground-muted] hover:bg-[--background-secondary] hover:text-[--foreground] transition-colors"
+                >
+                  <LogOut size={15} />
+                  Sign out
+                </button>
+              </>
+            ) : (
+              <Link
+                href="/login"
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center gap-2 px-3 py-2 rounded-[--radius-md] text-sm font-bold text-[--foreground-muted] hover:bg-[--background-secondary] hover:text-[--foreground] transition-colors"
+              >
+                <LogIn size={15} />
+                Sign in
+              </Link>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

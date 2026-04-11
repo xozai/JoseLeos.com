@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { motion, useReducedMotion } from "framer-motion";
 import { blurProps } from "@/lib/image";
 import { type ProjectListItem, type ProjectStatus } from "@/lib/types";
 
@@ -28,6 +31,8 @@ function StatusBadge({ status }: { status: ProjectStatus }) {
 
 export default function ProjectCard({ project }: { project: ProjectListItem }) {
   const { slug, title, featuredImage, projectFields } = project;
+  const reduced = useReducedMotion();
+
   const isActive =
     projectFields.projectStatus === "in-progress" ||
     projectFields.projectStatus === "paused";
@@ -37,34 +42,39 @@ export default function ProjectCard({ project }: { project: ProjectListItem }) {
 
   return (
     <Link href={`/portfolio/${slug}`} className="group block cursor-pointer">
-      <div className="aspect-[4/5] bg-[--background-secondary] overflow-hidden mb-5 rounded-[--radius-lg]">
-        {featuredImage ? (
-          <Image
-            src={featuredImage.node.sourceUrl}
-            alt={featuredImage.node.altText || title}
-            fill
-            className="object-cover group-hover:scale-105 transition-transform duration-500"
-            sizes="(max-width: 768px) 100vw, 33vw"
-            {...blurProps}
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center text-[--foreground-muted] text-4xl font-black opacity-10">
-            {title.charAt(0)}
-          </div>
+      <motion.div
+        whileHover={reduced ? undefined : { y: -4 }}
+        transition={{ duration: 0.2, ease: "easeOut" }}
+      >
+        <div className="aspect-[4/5] bg-[--background-secondary] overflow-hidden mb-5 rounded-[--radius-lg]">
+          {featuredImage ? (
+            <Image
+              src={featuredImage.node.sourceUrl}
+              alt={featuredImage.node.altText || title}
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-500"
+              sizes="(max-width: 768px) 100vw, 33vw"
+              {...blurProps}
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-[--foreground-muted] text-4xl font-black opacity-10">
+              {title.charAt(0)}
+            </div>
+          )}
+        </div>
+
+        {isActive && projectFields.projectStatus && (
+          <StatusBadge status={projectFields.projectStatus} />
         )}
-      </div>
 
-      {isActive && projectFields.projectStatus && (
-        <StatusBadge status={projectFields.projectStatus} />
-      )}
+        <span className="text-[0.65rem] font-bold uppercase tracking-widest text-[--foreground-muted] block mb-2">
+          {[category, year].filter(Boolean).join(" · ")}
+        </span>
 
-      <span className="text-[0.65rem] font-bold uppercase tracking-widest text-[--foreground-muted] block mb-2">
-        {[category, year].filter(Boolean).join(" · ")}
-      </span>
-
-      <h3 className="font-black text-xl tracking-tight group-hover:underline decoration-2 underline-offset-4 transition-all">
-        {title}
-      </h3>
+        <h3 className="font-black text-xl tracking-tight group-hover:underline decoration-2 underline-offset-4 transition-all">
+          {title}
+        </h3>
+      </motion.div>
     </Link>
   );
 }

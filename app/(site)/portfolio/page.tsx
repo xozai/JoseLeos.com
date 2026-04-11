@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import PortfolioGrid from "@/components/portfolio/PortfolioGrid";
 import CategoryFilterBar from "@/components/portfolio/CategoryFilterBar";
 import ProjectCard from "@/components/portfolio/ProjectCard";
+import FadeIn from "@/components/ui/FadeIn";
 import { apolloClient } from "@/lib/graphql/client";
 import { GET_PROJECTS } from "@/lib/graphql/queries/projects";
 import { auth } from "@/auth";
@@ -86,25 +87,31 @@ export default async function PortfolioPage({
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      <header className="mb-12">
-        <h1 className="text-4xl font-bold text-[--foreground] mb-3">Portfolio</h1>
-        <p className="text-lg text-[--foreground-muted] max-w-xl">
-          A selection of projects I&apos;ve designed and built — from product interfaces to open-source tools.
-        </p>
-      </header>
+      <FadeIn>
+        <header className="mb-12">
+          <h1 className="text-4xl font-bold text-[--foreground] mb-3">Portfolio</h1>
+          <p className="text-lg text-[--foreground-muted] max-w-xl">
+            A selection of projects I&apos;ve designed and built — from product interfaces to open-source tools.
+          </p>
+        </header>
+      </FadeIn>
 
-      <CategoryFilterBar categories={allCategories} active={category} />
+      <FadeIn delay={0.08}>
+        <CategoryFilterBar categories={allCategories} active={category} />
+      </FadeIn>
 
       {/* Currently Building */}
       {activeProjects.length > 0 && (
         <section className="mb-16">
-          <h2 className="text-xl font-semibold text-[--foreground] mb-6">Currently Building</h2>
+          <FadeIn>
+            <h2 className="text-xl font-semibold text-[--foreground] mb-6">Currently Building</h2>
+          </FadeIn>
           {/* Horizontal scroll on mobile, 2-col grid on desktop */}
           <div className="flex gap-5 overflow-x-auto pb-2 sm:pb-0 sm:grid sm:grid-cols-2 sm:overflow-visible">
-            {activeProjects.map((project) => (
-              <div key={project.slug} className="min-w-[280px] sm:min-w-0">
+            {activeProjects.map((project, i) => (
+              <FadeIn key={project.slug} index={i} className="min-w-[280px] sm:min-w-0">
                 <ProjectCard project={project} />
-              </div>
+              </FadeIn>
             ))}
           </div>
         </section>
@@ -114,9 +121,13 @@ export default async function PortfolioPage({
       {(completedAndUntagged.length > 0 || teaserCount > 0) && (
         <section>
           {activeProjects.length > 0 && (
-            <h2 className="text-xl font-semibold text-[--foreground] mb-6">Completed Work</h2>
+            <FadeIn>
+              <h2 className="text-xl font-semibold text-[--foreground] mb-6">Completed Work</h2>
+            </FadeIn>
           )}
-          <PortfolioGrid projects={completedAndUntagged} teaserCount={teaserCount} />
+          <FadeIn delay={0.1}>
+            <PortfolioGrid projects={completedAndUntagged} teaserCount={teaserCount} />
+          </FadeIn>
         </section>
       )}
 

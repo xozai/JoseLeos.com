@@ -1,9 +1,10 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { type ButtonHTMLAttributes, forwardRef } from "react";
+import { motion, useReducedMotion, type HTMLMotionProps } from "framer-motion";
+import { forwardRef } from "react";
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonProps extends Omit<HTMLMotionProps<"button">, "ref"> {
   variant?: "primary" | "secondary" | "ghost";
   size?: "sm" | "md" | "lg";
   asChild?: boolean;
@@ -11,6 +12,8 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ variant = "primary", size = "md", className, children, ...props }, ref) => {
+    const reduced = useReducedMotion();
+
     const base =
       "inline-flex items-center justify-center gap-2 font-medium rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[--primary] disabled:opacity-50 disabled:pointer-events-none";
 
@@ -28,13 +31,16 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     };
 
     return (
-      <button
+      <motion.button
         ref={ref}
+        whileHover={reduced ? undefined : { scale: 1.02 }}
+        whileTap={reduced ? undefined : { scale: 0.97 }}
+        transition={{ duration: 0.15, ease: "easeOut" }}
         className={cn(base, variants[variant], sizes[size], className)}
         {...props}
       >
         {children}
-      </button>
+      </motion.button>
     );
   }
 );
