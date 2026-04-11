@@ -6,14 +6,6 @@ const SITE_HOSTNAME = new URL(SITE_URL).hostname;
 
 export const runtime = "edge";
 
-const TYPE_LABEL: Record<string, string> = {
-  blog: "Blog Post",
-  portfolio: "Case Study",
-  review: "Review",
-  home: SITE_HOSTNAME,
-  page: SITE_HOSTNAME,
-};
-
 function formatOgDate(dateStr: string | null): string | null {
   if (!dateStr) return null;
   try {
@@ -27,12 +19,11 @@ function formatOgDate(dateStr: string | null): string | null {
   }
 }
 
-/** Render star glyphs for a rating 1–10 (stored as int, displayed as /5) */
 function renderStars(ratingStr: string | null): string | null {
   if (!ratingStr) return null;
   const raw = parseFloat(ratingStr);
   if (isNaN(raw) || raw <= 0) return null;
-  const score = Math.min(5, Math.max(0, raw / 2)); // 1-10 → 0.5-5
+  const score = Math.min(5, Math.max(0, raw / 2));
   const full = Math.floor(score);
   const half = score - full >= 0.5 ? 1 : 0;
   const empty = 5 - full - half;
@@ -48,13 +39,9 @@ export async function GET(req: NextRequest) {
   const readingTime = searchParams.get("readingTime");
   const rating = searchParams.get("rating");
 
-  const typeLabel = TYPE_LABEL[type] ?? SITE_HOSTNAME;
   const formattedDate = formatOgDate(dateStr);
   const stars = type === "review" ? renderStars(rating) : null;
-
-  const metaParts = [category, readingTime, formattedDate].filter(Boolean) as string[];
-
-  const isReview = type === "review";
+  const descriptor = [category, readingTime, formattedDate].filter(Boolean).join(" · ");
 
   return new ImageResponse(
     (
@@ -66,47 +53,66 @@ export async function GET(req: NextRequest) {
           flexDirection: "column",
           justifyContent: "space-between",
           padding: "56px 60px",
-          background: isReview
-            ? "linear-gradient(135deg, #0f0f0f 0%, #1a1215 100%)"
-            : "linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 100%)",
+          background: "#0f0f0f",
           fontFamily: "sans-serif",
+          position: "relative",
         }}
       >
-        {/* Top: type label */}
+        {/* Right edge stripe */}
         <div
           style={{
-            fontSize: 16,
-            color: isReview ? "#f59e0b" : "#3b82f6",
-            fontWeight: 700,
-            textTransform: "uppercase",
-            letterSpacing: "0.12em",
+            position: "absolute",
+            top: 0,
+            right: 0,
+            width: 4,
+            height: "100%",
+            background: "rgba(255,255,255,0.06)",
           }}
-        >
-          {typeLabel}
-          {category ? ` · ${category}` : ""}
+        />
+
+        {/* Top: name */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          <div
+            style={{
+              fontSize: 48,
+              fontWeight: 900,
+              color: "#ffffff",
+              letterSpacing: "-0.04em",
+              lineHeight: 1,
+            }}
+          >
+            JOSE LEOS
+          </div>
+          {descriptor && (
+            <div
+              style={{
+                fontSize: 20,
+                color: "#9ca3af",
+                fontWeight: 400,
+                letterSpacing: "0",
+              }}
+            >
+              {descriptor}
+            </div>
+          )}
         </div>
 
-        {/* Middle: title + stars for reviews */}
+        {/* Middle: title + stars */}
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           <div
             style={{
               fontSize: title.length > 50 ? 40 : title.length > 30 ? 50 : 60,
               fontWeight: 800,
               color: "#f0f0f0",
-              lineHeight: 1.15,
-              maxWidth: "85%",
+              lineHeight: 1.1,
+              letterSpacing: "-0.03em",
+              maxWidth: "88%",
             }}
           >
             {title}
           </div>
           {stars && (
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 10,
-              }}
-            >
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
               <span style={{ fontSize: 28, color: "#f59e0b", letterSpacing: 2 }}>
                 {stars}
               </span>
@@ -119,59 +125,16 @@ export async function GET(req: NextRequest) {
           )}
         </div>
 
-        {/* Bottom: author + meta */}
+        {/* Bottom: hostname */}
         <div
           style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
+            fontSize: 12,
+            color: "#5f5e5e",
+            fontFamily: "monospace",
+            letterSpacing: "0.05em",
           }}
         >
-          {/* Author */}
-          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-            <div
-              style={{
-                width: 44,
-                height: 44,
-                borderRadius: "50%",
-                background: isReview ? "#f59e0b" : "#3b82f6",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "#fff",
-                fontWeight: 800,
-                fontSize: 17,
-              }}
-            >
-              JL
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-              <span style={{ color: "#f0f0f0", fontSize: 17, fontWeight: 600 }}>Jose Leos</span>
-              <span style={{ color: "#6b7280", fontSize: 14 }}>{SITE_HOSTNAME}</span>
-            </div>
-          </div>
-
-          {/* Meta: reading time · date */}
-          {metaParts.length > 0 && (
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 8,
-                color: "#6b7280",
-                fontSize: 15,
-              }}
-            >
-              {metaParts
-                .filter((p) => p !== category) // category already in type label
-                .map((part, i) => (
-                  <span key={i} style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                    {i > 0 && <span style={{ color: "#374151" }}>·</span>}
-                    {part}
-                  </span>
-                ))}
-            </div>
-          )}
+          {SITE_HOSTNAME}
         </div>
       </div>
     ),

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { Menu, X, LayoutDashboard, LogOut, LogIn, Calendar } from "lucide-react";
+import { Menu, X, LayoutDashboard, LogOut, LogIn } from "lucide-react";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import { cn } from "@/lib/utils";
 import { signOut } from "next-auth/react";
@@ -30,12 +30,12 @@ export default function NavClient({ session }: NavClientProps) {
   const initial = session?.user?.name?.[0] ?? session?.user?.email?.[0] ?? "?";
 
   return (
-    <header className="sticky top-0 z-50 bg-[--background]/80 backdrop-blur-md border-b border-[--border]">
+    <header className="sticky top-0 z-50 bg-[--background]/70 backdrop-blur-xl border-b border-[--border]">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
         {/* Logo */}
         <Link
           href="/"
-          className="text-lg font-bold tracking-tight text-[--foreground] hover:text-[--primary] transition-colors"
+          className="text-xl font-black tracking-tighter text-[--foreground]"
         >
           Jose Leos
         </Link>
@@ -47,9 +47,9 @@ export default function NavClient({ session }: NavClientProps) {
               key={href}
               href={href}
               className={cn(
-                "text-sm font-medium transition-colors",
+                "text-sm font-bold tracking-tight transition-colors duration-200",
                 pathname.startsWith(href)
-                  ? "text-[--primary]"
+                  ? "text-[--foreground] border-b-2 border-[--foreground] pb-0.5"
                   : "text-[--foreground-muted] hover:text-[--foreground]"
               )}
             >
@@ -58,14 +58,13 @@ export default function NavClient({ session }: NavClientProps) {
           ))}
           <Link
             href="/booking"
-            className="flex items-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-lg border border-[--border] text-[--foreground-muted] hover:text-[--foreground] hover:border-[--primary] transition-colors"
+            className="text-sm font-bold tracking-tight text-[--foreground-muted] hover:text-[--foreground] transition-colors duration-200"
           >
-            <Calendar size={13} />
             Book a Meeting
           </Link>
           <Link
             href="/contact"
-            className="ml-2 text-sm font-medium px-4 py-1.5 rounded-lg bg-[--primary] text-[--primary-foreground] hover:opacity-90 transition-opacity"
+            className="ml-2 text-sm font-bold px-5 py-2 rounded-[--radius-md] bg-[--primary] text-[--primary-foreground] hover:opacity-80 active:scale-[0.98] transition-all"
           >
             Contact
           </Link>
@@ -78,7 +77,7 @@ export default function NavClient({ session }: NavClientProps) {
               {session.user.isOwner && (
                 <Link
                   href="/dashboard"
-                  className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-[--background-secondary] text-[--foreground-muted] hover:text-[--foreground] transition-colors"
+                  className="w-8 h-8 flex items-center justify-center rounded-[--radius-md] hover:bg-[--background-secondary] text-[--foreground-muted] hover:text-[--foreground] transition-colors"
                   title="Dashboard"
                 >
                   <LayoutDashboard size={16} />
@@ -94,7 +93,7 @@ export default function NavClient({ session }: NavClientProps) {
                 </Link>
                 <button
                   onClick={() => signOut({ callbackUrl: "/" })}
-                  className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-[--background-secondary] text-[--foreground-muted] hover:text-[--foreground] transition-colors"
+                  className="w-8 h-8 flex items-center justify-center rounded-[--radius-md] hover:bg-[--background-secondary] text-[--foreground-muted] hover:text-[--foreground] transition-colors"
                   title="Sign out"
                 >
                   <LogOut size={16} />
@@ -104,7 +103,7 @@ export default function NavClient({ session }: NavClientProps) {
           ) : (
             <Link
               href="/login"
-              className="flex items-center gap-1.5 text-sm font-medium text-[--foreground-muted] hover:text-[--foreground] transition-colors ml-1"
+              className="flex items-center gap-1.5 text-sm font-bold text-[--foreground-muted] hover:text-[--foreground] transition-colors ml-1"
             >
               <LogIn size={15} />
               Sign in
@@ -117,7 +116,7 @@ export default function NavClient({ session }: NavClientProps) {
           <ThemeToggle />
           <button
             onClick={() => setMobileOpen((v) => !v)}
-            className="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-[--background-secondary] text-[--foreground]"
+            className="w-9 h-9 flex items-center justify-center rounded-[--radius-md] hover:bg-[--background-secondary] text-[--foreground]"
             aria-label="Toggle menu"
           >
             {mobileOpen ? <X size={20} /> : <Menu size={20} />}
@@ -134,9 +133,9 @@ export default function NavClient({ session }: NavClientProps) {
               href={href}
               onClick={() => setMobileOpen(false)}
               className={cn(
-                "block px-3 py-2 rounded-lg text-sm font-medium transition-colors",
+                "block px-3 py-2 rounded-[--radius-md] text-sm font-bold transition-colors",
                 pathname.startsWith(href)
-                  ? "bg-[--background-secondary] text-[--primary]"
+                  ? "bg-[--background-secondary] text-[--foreground]"
                   : "text-[--foreground-muted] hover:bg-[--background-secondary] hover:text-[--foreground]"
               )}
             >
@@ -150,7 +149,7 @@ export default function NavClient({ session }: NavClientProps) {
                 <Link
                   href="/dashboard"
                   onClick={() => setMobileOpen(false)}
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-[--foreground-muted] hover:bg-[--background-secondary] hover:text-[--foreground] transition-colors"
+                  className="flex items-center gap-2 px-3 py-2 rounded-[--radius-md] text-sm font-bold text-[--foreground-muted] hover:bg-[--background-secondary] hover:text-[--foreground] transition-colors"
                 >
                   <LayoutDashboard size={15} />
                   Dashboard
@@ -158,7 +157,7 @@ export default function NavClient({ session }: NavClientProps) {
               )}
               <button
                 onClick={() => signOut({ callbackUrl: "/" })}
-                className="flex items-center gap-2 w-full px-3 py-2 rounded-lg text-sm font-medium text-[--foreground-muted] hover:bg-[--background-secondary] hover:text-[--foreground] transition-colors"
+                className="flex items-center gap-2 w-full px-3 py-2 rounded-[--radius-md] text-sm font-bold text-[--foreground-muted] hover:bg-[--background-secondary] hover:text-[--foreground] transition-colors"
               >
                 <LogOut size={15} />
                 Sign out
@@ -168,7 +167,7 @@ export default function NavClient({ session }: NavClientProps) {
             <Link
               href="/login"
               onClick={() => setMobileOpen(false)}
-              className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-[--foreground-muted] hover:bg-[--background-secondary] hover:text-[--foreground] transition-colors"
+              className="flex items-center gap-2 px-3 py-2 rounded-[--radius-md] text-sm font-bold text-[--foreground-muted] hover:bg-[--background-secondary] hover:text-[--foreground] transition-colors"
             >
               <LogIn size={15} />
               Sign in
