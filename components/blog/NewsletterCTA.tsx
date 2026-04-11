@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Mail } from "lucide-react";
+import { motion } from "framer-motion";
 
 export default function NewsletterCTA() {
   const [email, setEmail] = useState("");
@@ -63,13 +64,15 @@ export default function NewsletterCTA() {
                 placeholder="you@example.com"
                 className="flex-1 rounded-lg border border-[--border] bg-[--background] px-3 py-2 text-sm text-[--foreground] placeholder:text-[--foreground-muted] focus:outline-none focus:ring-2 focus:ring-[--primary] focus:border-transparent"
               />
-              <button
+              <motion.button
                 type="submit"
                 disabled={state === "loading"}
+                whileTap={{ scale: 0.97 }}
+                transition={{ duration: 0.15, ease: "easeOut" }}
                 className="px-4 py-2 rounded-lg bg-[--primary] text-[--primary-foreground] text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
               >
                 {state === "loading" ? "…" : "Subscribe"}
-              </button>
+              </motion.button>
             </form>
           )}
         </div>

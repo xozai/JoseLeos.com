@@ -3,43 +3,59 @@
 /* ─── Design Tokens ─────────────────────────────────────── */
 :root {
   /* Colors */
-  --background: #ffffff;
-  --background-secondary: #f8f8f8;
-  --foreground: #111111;
-  --foreground-muted: #6b7280;
-  --border: #e5e7eb;
-  --primary: #2563eb;
-  --primary-foreground: #ffffff;
-  --accent: #f59e0b;
+  --background:           #f9f9f9;
+  --background-secondary: #f3f3f3;
+  --surface-low:          #f3f3f3;
+  --foreground:           #1a1c1c;
+  --foreground-muted:     #5f5e5e;
+  --border:               #c6c6c6;
+  --primary:              #000000;
+  --primary-foreground:   #ffffff;
+  --accent-blue:          #004dea;
+  --accent:               #f59e0b;
 
   /* Radius */
-  --radius-sm: 0.375rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
+  --radius-sm:   0.125rem;
+  --radius-md:   0.25rem;
+  --radius-lg:   0.5rem;
+  --radius-xl:   0.75rem;
   --radius-full: 9999px;
 }
 
 .dark {
-  --background: #0f0f0f;
-  --background-secondary: #1a1a1a;
-  --foreground: #f0f0f0;
-  --foreground-muted: #9ca3af;
-  --border: #2a2a2a;
-  --primary: #3b82f6;
-  --primary-foreground: #ffffff;
-  --accent: #f59e0b;
+  --background:           #0f0f0f;
+  --background-secondary: #141414;
+  --surface-low:          #1a1a1a;
+  --foreground:           #f0f0f0;
+  --foreground-muted:     #9ca3af;
+  --border:               #2a2a2a;
+  --primary:              #ffffff;
+  --primary-foreground:   #000000;
+  --accent-blue:          #3b82f6;
+  --accent:               #f59e0b;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-background-secondary: var(--background-secondary);
+  --color-surface-low: var(--surface-low);
   --color-foreground: var(--foreground);
   --color-foreground-muted: var(--foreground-muted);
   --color-border: var(--border);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-accent-blue: var(--accent-blue);
   --color-accent: var(--accent);
+}
+
+/* ─── Reusable Utilities ────────────────────────────────── */
+@layer components {
+  .section-eyebrow {
+    @apply text-[0.75rem] font-bold uppercase tracking-[0.05em] text-[--primary] block mb-4;
+  }
+  .section-title {
+    @apply text-[2.75rem] font-black tracking-[-0.03em] leading-[1.05];
+  }
 }
 
 /* ─── Base ──────────────────────────────────────────────── */

@@ -6,6 +6,7 @@ import { OWNER_EMAIL } from "@/auth";
 import PostCard from "@/components/blog/PostCard";
 import GatedCard from "@/components/ui/GatedCard";
 import BlogPagination from "@/components/blog/BlogPagination";
+import FadeIn from "@/components/ui/FadeIn";
 import type { PostListItem } from "@/lib/types";
 
 export const revalidate = 60;
@@ -59,28 +60,34 @@ export default async function BlogPage({
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      <header className="mb-12">
-        <h1 className="text-4xl font-bold text-[--foreground] mb-3">Blog</h1>
-        <p className="text-lg text-[--foreground-muted]">
-          Thoughts on design, development, and things I&apos;m figuring out.
-        </p>
-      </header>
+      <FadeIn>
+        <header className="mb-12">
+          <h1 className="text-4xl font-bold text-[--foreground] mb-3">Blog</h1>
+          <p className="text-lg text-[--foreground-muted]">
+            Thoughts on design, development, and things I&apos;m figuring out.
+          </p>
+        </header>
+      </FadeIn>
 
       {visiblePosts.length > 0 || teaserCount > 0 ? (
         <div>
-          {visiblePosts.map((post) => (
-            <PostCard key={post.slug} post={post} />
+          {visiblePosts.map((post, i) => (
+            <FadeIn key={post.slug} index={i}>
+              <PostCard post={post} />
+            </FadeIn>
           ))}
           {teaserCount > 0 &&
             Array.from({ length: teaserCount }).map((_, i) => (
               <GatedCard key={`teaser-${i}`} type="post" className="mb-6" />
             ))}
-          <BlogPagination
-            basePath="/blog"
-            hasNextPage={hasNextPage}
-            endCursor={endCursor}
-            hasPrevPage={!!after}
-          />
+          <FadeIn delay={0.1}>
+            <BlogPagination
+              basePath="/blog"
+              hasNextPage={hasNextPage}
+              endCursor={endCursor}
+              hasPrevPage={!!after}
+            />
+          </FadeIn>
         </div>
       ) : (
         <div className="py-24 text-center text-[--foreground-muted]">
