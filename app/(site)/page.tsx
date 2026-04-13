@@ -18,7 +18,21 @@ import {
 import { filterByAccess } from "@/lib/access";
 import { getInstagramFeed } from "@/lib/instagram";
 import { blurProps } from "@/lib/image";
+import type { Metadata } from "next";
 import type { PostListItem, ProjectListItem, RecommendationItem } from "@/lib/types";
+import { SITE_URL, SITE_NAME } from "@/lib/site";
+
+export const metadata: Metadata = {
+  title: { absolute: SITE_NAME },
+  description: "Designer and developer based in Miami. I build digital products, write about design and engineering, and share things I recommend.",
+  alternates: { canonical: SITE_URL },
+  openGraph: {
+    title: SITE_NAME,
+    description: "Designer and developer based in Miami. I build digital products, write about design and engineering, and share things I recommend.",
+    url: SITE_URL,
+    type: "website",
+  },
+};
 
 export const revalidate = 60;
 
