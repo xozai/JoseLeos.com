@@ -215,6 +215,98 @@
       margin-bottom: 8px;
     }
 
+    /* Contact form */
+    .form-group {
+      margin-bottom: 12px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--gray-700);
+      margin-bottom: 4px;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 10px 12px;
+      font-size: 14px;
+      font-family: inherit;
+      border: 1px solid var(--gray-200);
+      border-radius: 8px;
+      background: var(--gray-50);
+      color: var(--gray-900);
+      transition: border-color 0.2s, box-shadow 0.2s;
+      min-height: 44px;
+    }
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.15);
+    }
+    .form-group input::placeholder {
+      color: var(--gray-500);
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .form-submit {
+      width: 100%;
+      padding: 12px;
+      background: var(--blue);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.2s;
+      min-height: 44px;
+      margin-top: 4px;
+    }
+    .form-submit:hover {
+      background: var(--blue-dark);
+    }
+    .form-submit:focus-visible {
+      outline: 2px solid var(--blue);
+      outline-offset: 2px;
+    }
+    .form-disclaimer {
+      font-size: 11px;
+      color: var(--gray-500);
+      text-align: center;
+      margin-top: 10px;
+    }
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 16px;
+    }
+    .form-success i {
+      font-size: 28px;
+      color: #34A853;
+      margin-bottom: 8px;
+    }
+    .form-success p {
+      font-size: 14px;
+      color: var(--gray-700);
+      font-weight: 500;
+    }
+    .form-success .sub {
+      font-size: 12px;
+      color: var(--gray-500);
+      font-weight: 400;
+      margin-top: 4px;
+    }
+    .form-error {
+      font-size: 12px;
+      color: #DC2626;
+      margin-top: 4px;
+      display: none;
+    }
+
     /* Focus styles */
     a:focus-visible, .cta:focus-visible {
       outline: 2px solid var(--blue);
@@ -321,18 +413,83 @@
       </div>
     </section>
 
+    <!-- Contact Form -->
+    <section class="card animate delay-2" id="contact-section">
+      <h2 class="section-title">Get In Touch</h2>
+      <form id="contact-form" action="https://formspree.io/f/{form_id}" method="POST">
+        <div class="form-group">
+          <label for="name">Name *</label>
+          <input type="text" id="name" name="name" placeholder="Your name" required>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="you@email.com">
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567">
+          </div>
+        </div>
+        <p class="form-error" id="contact-error">Please provide at least an email or phone number.</p>
+        <button type="submit" class="form-submit"><i class="fas fa-paper-plane"></i>&nbsp; Send</button>
+        <p class="form-disclaimer">Your info is only used to get back to you.</p>
+      </form>
+      <div class="form-success" id="contact-success">
+        <i class="fas fa-circle-check"></i>
+        <p>Thanks for reaching out!</p>
+        <p class="sub">I'll get back to you soon.</p>
+      </div>
+    </section>
+
     <!-- CTA -->
-    <section class="animate delay-2" style="margin-bottom: 16px;">
+    <section class="animate delay-3" style="margin-bottom: 16px;">
       <a href="https://calendly.com/joseleos" class="cta" target="_blank" rel="noopener">
         <i class="fas fa-calendar-check"></i>&nbsp; Schedule Time With Me
       </a>
     </section>
 
     <!-- Footer -->
-    <footer class="animate delay-3">
+    <footer class="animate delay-4">
       <span class="coming-soon"><i class="fas fa-hammer"></i> Full portfolio coming soon</span>
       <p>&copy; 2026 Jose Leos</p>
     </footer>
   </main>
+  <script>
+    const form = document.getElementById('contact-form');
+    const error = document.getElementById('contact-error');
+    const success = document.getElementById('contact-success');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = form.email.value.trim();
+      const phone = form.phone.value.trim();
+
+      if (!email && !phone) {
+        error.textContent = 'Please provide at least an email or phone number.';
+        error.style.display = 'block';
+        return;
+      }
+      error.style.display = 'none';
+
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          headers: { 'Accept': 'application/json' },
+          body: new FormData(form)
+        });
+        if (res.ok) {
+          form.style.display = 'none';
+          success.style.display = 'block';
+        } else {
+          error.textContent = 'Something went wrong. Please try again.';
+          error.style.display = 'block';
+        }
+      } catch {
+        error.textContent = 'Something went wrong. Please try again.';
+        error.style.display = 'block';
+      }
+    });
+  </script>
 </body>
 </html>
