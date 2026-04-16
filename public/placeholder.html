@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jose Leos — Proven Tech Leader</title>
+  <meta name="description" content="Jose Leos — Proven Tech Leader based in San Francisco, CA. Stanford University alum.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue: #0066FF;
+      --blue-light: #e8f0fe;
+      --blue-dark: #0052cc;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-500: #6b7280;
+      --gray-700: #374151;
+      --gray-900: #111827;
+      --radius: 12px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
+      --shadow-lg: 0 4px 16px rgba(0,0,0,0.10);
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--gray-50);
+      color: var(--gray-900);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 24px 16px 48px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 480px;
+    }
+
+    /* Animations */
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate {
+      animation: fadeSlideUp 0.5s ease-out both;
+    }
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+    .delay-4 { animation-delay: 0.4s; }
+
+    /* Card */
+    .card {
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 32px 24px 24px;
+    }
+    .avatar {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      font-weight: 700;
+      margin: 0 auto 16px;
+      box-shadow: 0 4px 20px rgba(0, 102, 255, 0.3);
+    }
+    .hero h1 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .hero .headline {
+      font-size: 16px;
+      color: var(--blue);
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .meta {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      font-size: 13px;
+      color: var(--gray-500);
+      margin-bottom: 16px;
+    }
+    .meta span {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .meta i {
+      color: var(--blue);
+      font-size: 12px;
+    }
+
+    /* Tags */
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+    .tag {
+      background: var(--blue-light);
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 5px 12px;
+      border-radius: 20px;
+    }
+
+    /* Section titles */
+    .section-title {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--gray-500);
+      margin-bottom: 14px;
+    }
+
+    /* Contact buttons */
+    .contact-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .contact-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border-radius: 10px;
+      background: var(--gray-50);
+      color: var(--gray-900);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: background 0.2s, box-shadow 0.2s;
+      border: 1px solid var(--gray-200);
+    }
+    .contact-btn:hover {
+      background: var(--blue-light);
+      border-color: var(--blue);
+      box-shadow: var(--shadow);
+    }
+    .contact-btn .icon-wrap {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .contact-btn .detail {
+      color: var(--gray-500);
+      font-size: 12px;
+      font-weight: 400;
+    }
+
+    /* Social grid */
+    .social-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .social-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      color: var(--gray-700);
+      font-size: 11px;
+      font-weight: 500;
+      transition: transform 0.2s;
+    }
+    .social-link:hover {
+      transform: translateY(-2px);
+    }
+    .social-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    /* CTA button */
+    .cta {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      background: var(--blue);
+      color: #fff;
+      text-align: center;
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 600;
+      border-radius: 10px;
+      transition: background 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 14px rgba(0, 102, 255, 0.25);
+    }
+    .cta:hover {
+      background: var(--blue-dark);
+      box-shadow: 0 6px 20px rgba(0, 102, 255, 0.35);
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 24px 16px;
+      color: var(--gray-500);
+      font-size: 12px;
+      line-height: 1.8;
+    }
+    footer .coming-soon {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--blue-light);
+      color: var(--blue);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    /* Brand colors */
+    .bg-calendly  { background: #006BFF; }
+    .bg-email     { background: #EA4335; }
+    .bg-phone     { background: #34A853; }
+    .bg-whatsapp  { background: #25D366; }
+    .bg-zelle     { background: #6D1ED4; }
+    .bg-linkedin  { background: #0A66C2; }
+    .bg-instagram { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+    .bg-twitter   { background: #000000; }
+    .bg-threads   { background: #000000; }
+    .bg-github    { background: #24292f; }
+    .bg-spotify   { background: #1DB954; }
+    .bg-youtube   { background: #FF0000; }
+    .bg-tiktok    { background: #000000; }
+    .bg-facebook  { background: #1877F2; }
+    .bg-pinterest { background: #E60023; }
+    .bg-soundcloud{ background: #FF5500; }
+    .bg-yelp      { background: #D32323; }
+    .bg-discord   { background: #5865F2; }
+    .bg-telegram  { background: #26A5E4; }
+    .bg-paypal    { background: #003087; }
+    .bg-venmo     { background: #008CFF; }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <!-- Hero -->
+    <section class="card hero animate">
+      <div class="avatar" role="img" aria-label="Jose Leos profile photo">JL</div>
+      <h1>Jose Leos</h1>
+      <p class="headline">Proven Tech Leader</p>
+      <div class="meta">
+        <span><i class="fas fa-location-dot"></i> San Francisco, CA</span>
+        <span><i class="fas fa-graduation-cap"></i> Stanford University</span>
+      </div>
+      <div class="tags">
+        <span class="tag">Tech Geek</span>
+        <span class="tag">Data Scientist</span>
+        <span class="tag">Marketing Pro</span>
+        <span class="tag">Runner</span>
+        <span class="tag">Product Manager</span>
+        <span class="tag">Entrepreneurship</span>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="card animate delay-1">
+      <h2 class="section-title">Contact</h2>
+      <div class="contact-list">
+        <a href="https://calendly.com/joseleos" class="contact-btn" target="_blank" rel="noopener">
+          <span class="icon-wrap bg-calendly"><i class="fas fa-calendar-check"></i></span>
+          <span>Calendly<br><span class="detail">Schedule a meeting</span></span>
+        </a>
+        <a href="mailto:joseleos@gmail.com" class="contact-btn">
+          <span class="icon-wrap bg-email"><i class="fas fa-envelope"></i></span>
+          <span>Email<br><span class="detail">joseleos@gmail.com</span></span>
+        </a>
+        <a href="tel:+14153773150" class="contact-btn">
+          <span class="icon-wrap bg-phone"><i class="fas fa-phone"></i></span>
+          <span>Phone<br><span class="detail">+1 (415) 377-3150</span></span>
+        </a>
+        <a href="https://wa.me/14153773150" class="contact-btn" target="_blank" rel="noopener">
+          <span class="icon-wrap bg-whatsapp"><i class="fab fa-whatsapp"></i></span>
+          <span>WhatsApp<br><span class="detail">Send a message</span></span>
+        </a>
+        <div class="contact-btn" style="cursor: default;">
+          <span class="icon-wrap bg-zelle"><i class="fas fa-dollar-sign"></i></span>
+          <span>Zelle<br><span class="detail">joseleos@gmail.com</span></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Social Links -->
+    <section class="card animate delay-2">
+      <h2 class="section-title">Social</h2>
+      <div class="social-grid">
+        <a href="https://linkedin.com/in/joseleos" class="social-link" target="_blank" rel="noopener" aria-label="LinkedIn">
+          <span class="social-icon bg-linkedin"><i class="fab fa-linkedin-in"></i></span>LinkedIn
+        </a>
+        <a href="https://instagram.com/xozai" class="social-link" target="_blank" rel="noopener" aria-label="Instagram">
+          <span class="social-icon bg-instagram"><i class="fab fa-instagram"></i></span>Instagram
+        </a>
+        <a href="https://x.com/xozai" class="social-link" target="_blank" rel="noopener" aria-label="X / Twitter">
+          <span class="social-icon bg-twitter"><i class="fab fa-x-twitter"></i></span>X
+        </a>
+        <a href="https://threads.net/@xozai" class="social-link" target="_blank" rel="noopener" aria-label="Threads">
+          <span class="social-icon bg-threads"><i class="fab fa-threads"></i></span>Threads
+        </a>
+        <a href="https://github.com/xozai" class="social-link" target="_blank" rel="noopener" aria-label="GitHub">
+          <span class="social-icon bg-github"><i class="fab fa-github"></i></span>GitHub
+        </a>
+        <a href="https://open.spotify.com" class="social-link" target="_blank" rel="noopener" aria-label="Spotify">
+          <span class="social-icon bg-spotify"><i class="fab fa-spotify"></i></span>Spotify
+        </a>
+        <a href="https://youtube.com" class="social-link" target="_blank" rel="noopener" aria-label="YouTube">
+          <span class="social-icon bg-youtube"><i class="fab fa-youtube"></i></span>YouTube
+        </a>
+        <a href="https://tiktok.com" class="social-link" target="_blank" rel="noopener" aria-label="TikTok">
+          <span class="social-icon bg-tiktok"><i class="fab fa-tiktok"></i></span>TikTok
+        </a>
+        <a href="https://facebook.com" class="social-link" target="_blank" rel="noopener" aria-label="Facebook">
+          <span class="social-icon bg-facebook"><i class="fab fa-facebook-f"></i></span>Facebook
+        </a>
+        <a href="https://pinterest.com" class="social-link" target="_blank" rel="noopener" aria-label="Pinterest">
+          <span class="social-icon bg-pinterest"><i class="fab fa-pinterest-p"></i></span>Pinterest
+        </a>
+        <a href="https://soundcloud.com" class="social-link" target="_blank" rel="noopener" aria-label="SoundCloud">
+          <span class="social-icon bg-soundcloud"><i class="fab fa-soundcloud"></i></span>SoundCloud
+        </a>
+        <a href="https://yelp.com" class="social-link" target="_blank" rel="noopener" aria-label="Yelp">
+          <span class="social-icon bg-yelp"><i class="fab fa-yelp"></i></span>Yelp
+        </a>
+        <a href="https://discord.com" class="social-link" target="_blank" rel="noopener" aria-label="Discord">
+          <span class="social-icon bg-discord"><i class="fab fa-discord"></i></span>Discord
+        </a>
+        <a href="https://t.me" class="social-link" target="_blank" rel="noopener" aria-label="Telegram">
+          <span class="social-icon bg-telegram"><i class="fab fa-telegram"></i></span>Telegram
+        </a>
+        <a href="https://paypal.me" class="social-link" target="_blank" rel="noopener" aria-label="PayPal">
+          <span class="social-icon bg-paypal"><i class="fab fa-paypal"></i></span>PayPal
+        </a>
+        <a href="https://venmo.com" class="social-link" target="_blank" rel="noopener" aria-label="Venmo">
+          <span class="social-icon bg-venmo"><i class="fas fa-dollar-sign"></i></span>Venmo
+        </a>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="animate delay-3" style="margin-bottom: 16px;">
+      <a href="https://joseleos.com" class="cta">
+        <i class="fas fa-globe"></i>&nbsp; Visit Joseleos.com
+      </a>
+    </section>
+
+    <!-- Footer -->
+    <footer class="animate delay-4">
+      <span class="coming-soon"><i class="fas fa-hammer"></i> Full portfolio coming soon</span>
+      <p>&copy; 2026 Jose Leos</p>
+    </footer>
+  </main>
+</body>
+</html>
