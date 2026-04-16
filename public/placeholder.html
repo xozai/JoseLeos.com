@@ -5,6 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Jose Leos — Proven Tech Leader</title>
   <meta name="description" content="Jose Leos — Proven Tech Leader based in San Francisco, CA. Stanford University alum.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='12' fill='%230066FF'/><text x='32' y='43' font-family='sans-serif' font-size='28' font-weight='bold' fill='white' text-anchor='middle'>JL</text></svg>">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Jose Leos — Proven Tech Leader">
+  <meta property="og:description" content="Tech leader, data scientist, and Stanford alum based in San Francisco. Connect with me.">
+  <meta property="og:url" content="https://joseleos.com">
+  <meta property="og:image" content="https://joseleos.com/joseleos_pro.jpeg">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Jose Leos — Proven Tech Leader">
+  <meta name="twitter:description" content="Tech leader, data scientist, and Stanford alum based in San Francisco. Connect with me.">
+  <meta name="twitter:image" content="https://joseleos.com/joseleos_pro.jpeg">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -23,7 +33,6 @@
       --gray-900: #111827;
       --radius: 12px;
       --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
-      --shadow-lg: 0 4px 16px rgba(0,0,0,0.10);
     }
 
     body {
@@ -69,8 +78,8 @@
       padding: 32px 24px 24px;
     }
     .avatar {
-      width: 110px;
-      height: 110px;
+      width: 130px;
+      height: 130px;
       border-radius: 50%;
       background: var(--blue);
       color: #fff;
@@ -117,7 +126,7 @@
     }
     .tag {
       background: var(--blue-light);
-      color: var(--blue);
+      color: #0052cc;
       font-size: 12px;
       font-weight: 500;
       padding: 5px 12px;
@@ -134,53 +143,11 @@
       margin-bottom: 14px;
     }
 
-    /* Contact buttons */
-    .contact-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .contact-btn {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 16px;
-      border-radius: 10px;
-      background: var(--gray-50);
-      color: var(--gray-900);
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 500;
-      transition: background 0.2s, box-shadow 0.2s;
-      border: 1px solid var(--gray-200);
-    }
-    .contact-btn:hover {
-      background: var(--blue-light);
-      border-color: var(--blue);
-      box-shadow: var(--shadow);
-    }
-    .contact-btn .icon-wrap {
-      width: 36px;
-      height: 36px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      color: #fff;
-      flex-shrink: 0;
-    }
-    .contact-btn .detail {
-      color: var(--gray-500);
-      font-size: 12px;
-      font-weight: 400;
-    }
-
     /* Social grid */
     .social-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
+      gap: 16px;
     }
     .social-link {
       display: flex;
@@ -248,12 +215,14 @@
       margin-bottom: 8px;
     }
 
+    /* Focus styles */
+    a:focus-visible, .cta:focus-visible {
+      outline: 2px solid var(--blue);
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+
     /* Brand colors */
-    .bg-calendly  { background: #006BFF; }
-    .bg-email     { background: #EA4335; }
-    .bg-phone     { background: #34A853; }
-    .bg-whatsapp  { background: #25D366; }
-    .bg-zelle     { background: #6D1ED4; }
     .bg-linkedin  { background: #0A66C2; }
     .bg-instagram { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
     .bg-twitter   { background: #000000; }
@@ -294,31 +263,8 @@
       </div>
     </section>
 
-    <!-- Contact -->
-    <section class="card animate delay-1">
-      <h2 class="section-title">Contact</h2>
-      <div class="contact-list">
-        <a href="mailto:joseleos@gmail.com" class="contact-btn">
-          <span class="icon-wrap bg-email"><i class="fas fa-envelope"></i></span>
-          <span>Email<br><span class="detail">joseleos@gmail.com</span></span>
-        </a>
-        <a href="tel:+14153773150" class="contact-btn">
-          <span class="icon-wrap bg-phone"><i class="fas fa-phone"></i></span>
-          <span>Phone<br><span class="detail">+1 (415) 377-3150</span></span>
-        </a>
-        <a href="https://wa.me/14153773150" class="contact-btn" target="_blank" rel="noopener">
-          <span class="icon-wrap bg-whatsapp"><i class="fab fa-whatsapp"></i></span>
-          <span>WhatsApp<br><span class="detail">Send a message</span></span>
-        </a>
-        <div class="contact-btn" style="cursor: default;">
-          <span class="icon-wrap bg-zelle"><i class="fas fa-dollar-sign"></i></span>
-          <span>Zelle<br><span class="detail">joseleos@gmail.com</span></span>
-        </div>
-      </div>
-    </section>
-
     <!-- Social Links -->
-    <section class="card animate delay-2">
+    <section class="card animate delay-1">
       <h2 class="section-title">Social</h2>
       <div class="social-grid">
         <a href="https://linkedin.com/in/joseleos" class="social-link" target="_blank" rel="noopener" aria-label="LinkedIn">
@@ -343,7 +289,7 @@
           <span class="social-icon bg-youtube"><i class="fab fa-youtube"></i></span>YouTube
         </a>
         <a href="https://bsky.app/profile/joseleos.bsky.social" class="social-link" target="_blank" rel="noopener" aria-label="Bluesky">
-          <span class="social-icon bg-bluesky"><i class="fab fa-bluesky"></i></span>Bluesky
+          <span class="social-icon bg-bluesky"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 568 501" fill="white"><path d="M123.121 33.664C188.241 82.553 258.281 181.68 284 234.873c25.719-53.192 95.759-152.32 160.879-201.21C491.866-1.611 568-28.906 568 57.947c0 17.346-9.945 145.713-15.778 166.555-20.275 72.453-94.155 90.933-159.875 79.748C507.222 323.8 536.444 388.56 473.333 453.32c-119.86 122.992-172.272-30.859-185.702-70.281-2.462-7.227-3.614-10.608-3.631-7.733-.017-2.875-1.169.506-3.631 7.733-13.43 39.422-65.842 193.273-185.702 70.281-63.111-64.76-33.889-129.52 80.986-149.071-65.72 11.185-139.6-7.295-159.875-79.748C10.945 203.659 1 75.291 1 57.946 1-28.906 76.135-1.612 123.121 33.664z"/></svg></span>Bluesky
         </a>
         <a href="https://www.facebook.com/joseleos/" class="social-link" target="_blank" rel="noopener" aria-label="Facebook">
           <span class="social-icon bg-facebook"><i class="fab fa-facebook-f"></i></span>Facebook
@@ -376,14 +322,14 @@
     </section>
 
     <!-- CTA -->
-    <section class="animate delay-3" style="margin-bottom: 16px;">
+    <section class="animate delay-2" style="margin-bottom: 16px;">
       <a href="https://calendly.com/joseleos" class="cta" target="_blank" rel="noopener">
         <i class="fas fa-calendar-check"></i>&nbsp; Schedule Time With Me
       </a>
     </section>
 
     <!-- Footer -->
-    <footer class="animate delay-4">
+    <footer class="animate delay-3">
       <span class="coming-soon"><i class="fas fa-hammer"></i> Full portfolio coming soon</span>
       <p>&copy; 2026 Jose Leos</p>
     </footer>
