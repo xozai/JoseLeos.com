@@ -11,56 +11,46 @@ export const metadata: Metadata = {
   },
 };
 
+// TODO: Replace with your real work experience
 const EXPERIENCE = [
   {
-    role: "Senior Product Designer",
-    org: "Company Name",
-    period: "2024 – Present",
-    location: "Remote",
+    role: "TODO: Job Title",
+    org: "TODO: Company",
+    period: "20XX – Present",
+    location: "TODO: Location",
     bullets: [
-      "Led redesign of the core product dashboard, reducing task completion time by 34%.",
-      "Established a Figma-based design system covering 120+ components used by 4 engineers.",
-      "Partnered with product and engineering on a 0→1 mobile app launch (React Native).",
+      "TODO: Describe a key accomplishment.",
+      "TODO: Describe another accomplishment.",
     ],
   },
   {
-    role: "Fullstack Developer",
-    org: "Agency Name",
-    period: "2022 – 2024",
-    location: "Hybrid",
+    role: "TODO: Job Title",
+    org: "TODO: Company",
+    period: "20XX – 20XX",
+    location: "TODO: Location",
     bullets: [
-      "Built and maintained 8 client sites using Next.js, TypeScript, and headless CMS.",
-      "Introduced performance budgets and automated Lighthouse CI — average score improved from 68 → 94.",
-      "Mentored two junior developers through code review and pair programming sessions.",
-    ],
-  },
-  {
-    role: "UI/UX Designer",
-    org: "Startup Name",
-    period: "2020 – 2022",
-    location: "On-site",
-    bullets: [
-      "Designed end-to-end UX for a SaaS analytics product from 0 to Series A (10k users).",
-      "Conducted 60+ user interviews; findings directly shaped 3 major product pivots.",
-      "Owned design → dev handoff process, cutting implementation mismatches by 50%.",
+      "TODO: Describe a key accomplishment.",
+      "TODO: Describe another accomplishment.",
     ],
   },
 ];
 
+// TODO: Replace with your real education
 const EDUCATION = [
   {
-    degree: "B.S. Computer Science",
-    school: "University Name",
-    period: "2016 – 2020",
-    note: "Minor in Human-Computer Interaction. Graduated with honors.",
+    degree: "TODO: Degree",
+    school: "TODO: University",
+    period: "20XX – 20XX",
+    note: "TODO: Additional details (minor, honors, etc.)",
   },
 ];
 
+// TODO: Replace with your actual skills
 const SKILLS = {
-  Design: ["Figma", "Framer", "Prototyping", "User Research", "Design Systems", "Accessibility"],
-  Frontend: ["TypeScript", "React", "Next.js", "Tailwind CSS", "Framer Motion", "Storybook"],
-  Backend: ["Node.js", "PostgreSQL", "GraphQL", "REST APIs", "Vercel", "Cloudflare Workers"],
-  Tools: ["Git", "Linear", "Notion", "VS Code", "Warp", "TablePlus"],
+  Design: ["TODO", "TODO", "TODO"],
+  Frontend: ["TODO", "TODO", "TODO"],
+  Backend: ["TODO", "TODO", "TODO"],
+  Tools: ["TODO", "TODO", "TODO"],
 };
 
 export default function ResumePage() {
@@ -74,9 +64,9 @@ export default function ResumePage() {
               <h1 className="text-4xl font-bold text-[--foreground] mb-1">Jose Leos</h1>
               <p className="text-xl text-[--foreground-muted] mb-4">Designer &amp; Developer</p>
               <div className="flex flex-wrap gap-4 text-sm text-[--foreground-muted]">
-                <span className="flex items-center gap-1.5"><MapPin size={13} /> Remote / [City]</span>
-                <a href="mailto:jose@joseLeos.com" className="flex items-center gap-1.5 hover:text-[--primary] transition-colors">
-                  <Mail size={13} /> jose@joseLeos.com
+                <span className="flex items-center gap-1.5"><MapPin size={13} /> TODO: Location</span>
+                <a href="mailto:TODO@joseLeos.com" className="flex items-center gap-1.5 hover:text-[--primary] transition-colors">
+                  <Mail size={13} /> TODO@joseLeos.com
                 </a>
                 <Link href="/" className="flex items-center gap-1.5 hover:text-[--primary] transition-colors">
                   <Globe size={13} /> joseLeos.com
@@ -99,10 +89,7 @@ export default function ResumePage() {
         <section className="mb-12">
           <h2 className="section-heading">Summary</h2>
           <p className="text-[--foreground-muted] leading-relaxed">
-            Designer and developer with 6+ years building digital products end-to-end. I work across
-            the full stack — from early-stage research and wireframing to shipping production code.
-            I care deeply about clarity, performance, and the small details that make software feel
-            intentional. Looking for ambitious product teams where design and engineering overlap.
+            TODO: Write a 2-3 sentence professional summary.
           </p>
         </section>
       </FadeIn>

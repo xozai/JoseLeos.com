@@ -8,22 +8,25 @@ export const metadata: Metadata = {
   description: "Learn more about Jose Leos — designer, developer, and writer.",
 };
 
+// TODO: Replace with your actual skills
 const SKILLS = [
   "TypeScript", "React", "Next.js", "Node.js",
   "Tailwind CSS", "Figma", "PostgreSQL", "GraphQL",
 ];
 
+// TODO: Replace with your real work history and education
 const TIMELINE = [
-  { year: "2024–Present", role: "Senior Product Designer", org: "Company Name" },
-  { year: "2022–2024", role: "Fullstack Developer", org: "Agency Name" },
-  { year: "2020–2022", role: "UI/UX Designer", org: "Startup Name" },
-  { year: "2016–2020", role: "B.S. Computer Science", org: "University Name" },
+  { year: "20XX–Present", role: "TODO: Current Role", org: "TODO: Current Company" },
+  { year: "20XX–20XX", role: "TODO: Previous Role", org: "TODO: Previous Company" },
+  { year: "20XX–20XX", role: "TODO: Earlier Role", org: "TODO: Earlier Company" },
+  { year: "20XX–20XX", role: "TODO: Degree", org: "TODO: University" },
 ];
 
+// TODO: Replace with your actual social URLs
 const SOCIAL = [
-  { icon: Github, href: "https://github.com/joseleos", label: "GitHub" },
-  { icon: Twitter, href: "https://twitter.com/joseleos", label: "Twitter" },
-  { icon: Linkedin, href: "https://linkedin.com/in/joseleos", label: "LinkedIn" },
+  { icon: Github, href: "https://github.com/TODO", label: "GitHub" },
+  { icon: Twitter, href: "https://twitter.com/TODO", label: "Twitter" },
+  { icon: Linkedin, href: "https://linkedin.com/in/TODO", label: "LinkedIn" },
 ];
 
 export default function AboutPage() {
@@ -32,27 +35,18 @@ export default function AboutPage() {
       <FadeIn>
         <header className="mb-12">
           <h1 className="text-4xl font-bold text-[--foreground] mb-4">About Me</h1>
+          {/* TODO: Write your personal intro */}
           <p className="text-lg text-[--foreground-muted] leading-relaxed">
-            I&apos;m Jose Leos — a designer and developer with a passion for building clean, useful
-            digital products. I write about design systems, web development, and the intersection
-            of craft and technology.
+            I&apos;m Jose Leos — TODO: write a short personal introduction here.
           </p>
         </header>
       </FadeIn>
 
       <FadeIn delay={0.08}>
+        {/* TODO: Replace with your real bio paragraphs */}
         <section className="mb-12 space-y-4 text-[--foreground-muted] leading-relaxed">
-          <p>
-            Over the past several years I&apos;ve worked across the full stack — from designing
-            component libraries in Figma to shipping production APIs. I care deeply about
-            the details: typography, spacing, performance, and the tiny interactions that
-            make software feel alive.
-          </p>
-          <p>
-            Outside of work I&apos;m an avid reader, occasional photographer, and obsessive
-            note-taker. This site is where I share my work, thinking, and the things I
-            find genuinely useful.
-          </p>
+          <p>TODO: Write a paragraph about your professional background and what you care about.</p>
+          <p>TODO: Write a paragraph about your interests outside of work.</p>
         </section>
       </FadeIn>
 

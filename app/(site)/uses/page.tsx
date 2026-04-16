@@ -15,56 +15,47 @@ interface Category {
   items: { name: string; desc: string; url?: string }[];
 }
 
+// TODO: Replace each category with your actual hardware, software, and services
 const STACK: Category[] = [
   {
     name: "Hardware",
     items: [
-      { name: "MacBook Pro 14″ M3 Pro", desc: "My primary machine for design and development. Silent, fast, and the battery lasts all day." },
-      { name: "LG UltraFine 27UN850", desc: "4K USB-C monitor. Color accuracy is excellent for design work without a separate hub." },
-      { name: "Apple Magic Keyboard", desc: "Touch ID model with numeric keypad. Nothing fancy, but it just works." },
-      { name: "Logitech MX Master 3S", desc: "Best mouse I've ever used. The horizontal scroll wheel alone is worth it." },
-      { name: "Sony WH-1000XM5", desc: "ANC headphones for deep work sessions. The noise cancellation is remarkable." },
-      { name: "iPad Pro 12.9″ M2", desc: "Secondary screen via Sidecar, reading, and sketching wireframes with the Apple Pencil." },
+      { name: "TODO: Primary computer", desc: "TODO: Why you like it." },
+      { name: "TODO: Monitor", desc: "TODO: Why you like it." },
+      { name: "TODO: Keyboard", desc: "TODO: Why you like it." },
+      { name: "TODO: Pointing device", desc: "TODO: Why you like it." },
     ],
   },
   {
     name: "Development",
     items: [
-      { name: "VS Code", desc: "Editor of choice. Dracula Pro theme + Geist Mono font.", url: "https://code.visualstudio.com" },
-      { name: "Warp Terminal", desc: "Modern terminal with AI autocomplete and block-based output.", url: "https://www.warp.dev" },
-      { name: "TablePlus", desc: "Clean GUI for Postgres, MySQL, and Redis. Replaces a dozen clunkier tools.", url: "https://tableplus.com" },
-      { name: "Insomnia", desc: "REST/GraphQL API testing. Simpler than Postman for my workflow.", url: "https://insomnia.rest" },
-      { name: "Fork", desc: "Git GUI I actually enjoy using. Fast, clear diff view.", url: "https://git-fork.com" },
-      { name: "Raycast", desc: "Spotlight replacement. Clipboard history, snippets, and window management all in one.", url: "https://www.raycast.com" },
+      { name: "TODO: Code editor", desc: "TODO: Theme, font, notable extensions." },
+      { name: "TODO: Terminal", desc: "TODO: Why you use it." },
+      { name: "TODO: Database tool", desc: "TODO: Why you use it." },
+      { name: "TODO: API client", desc: "TODO: Why you use it." },
     ],
   },
   {
     name: "Design",
     items: [
-      { name: "Figma", desc: "All UI/UX design and prototyping. Auto-layout and component properties changed how I work.", url: "https://figma.com" },
-      { name: "Pixelmator Pro", desc: "Photo editing and the occasional illustration. Much lighter than Photoshop.", url: "https://www.pixelmator.com" },
-      { name: "Framer", desc: "Interactive prototyping and design-to-production for landing pages.", url: "https://framer.com" },
-      { name: "Fontbase", desc: "Font manager that activates only what I need so my system stays clean.", url: "https://fontba.se" },
+      { name: "TODO: Design tool", desc: "TODO: What you use it for." },
+      { name: "TODO: Image editor", desc: "TODO: What you use it for." },
     ],
   },
   {
     name: "Productivity",
     items: [
-      { name: "Notion", desc: "My second brain. Projects, meeting notes, reading lists.", url: "https://notion.so" },
-      { name: "Linear", desc: "Issue tracking for every project. The keyboard-first UX is a pleasure.", url: "https://linear.app" },
-      { name: "Cron", desc: "Calendar app that finally makes scheduling feel fast.", url: "https://cron.com" },
-      { name: "Readwise Reader", desc: "Read-later + RSS in one app. Highlights sync back to Notion automatically.", url: "https://readwise.io/read" },
-      { name: "1Password", desc: "Password manager. The family plan is worth every dollar.", url: "https://1password.com" },
-      { name: "CleanMyMac X", desc: "Annual maintenance ritual. Keeps my disk from silently filling up.", url: "https://cleanmymac.com" },
+      { name: "TODO: Notes app", desc: "TODO: How you use it." },
+      { name: "TODO: Task manager", desc: "TODO: How you use it." },
+      { name: "TODO: Calendar", desc: "TODO: How you use it." },
     ],
   },
   {
     name: "Services",
     items: [
-      { name: "Vercel", desc: "Deploy everything here. Edge network, preview deployments, and KV storage are hard to beat.", url: "https://vercel.com" },
-      { name: "Cloudflare", desc: "DNS, CDN, and R2 for asset storage.", url: "https://cloudflare.com" },
-      { name: "Resend", desc: "Transactional emails. Clean API and generous free tier.", url: "https://resend.com" },
-      { name: "Fathom Analytics", desc: "Privacy-first analytics. Single number per page, no cookie banners.", url: "https://usefathom.com" },
+      { name: "TODO: Hosting", desc: "TODO: Why you chose it." },
+      { name: "TODO: DNS / CDN", desc: "TODO: Why you chose it." },
+      { name: "TODO: Email service", desc: "TODO: Why you chose it." },
     ],
   },
 ];
