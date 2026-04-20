@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "placeholder",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "public", "-l", "3111"],
+      "port": 3111
+    }
+  ]
+}

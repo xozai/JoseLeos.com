@@ -13,26 +13,23 @@ export const metadata: Metadata = {
 // Last updated date — bump this whenever the page content changes
 const LAST_UPDATED = "March 2026";
 
+// TODO: Replace with what you're actually focused on right now
 const NOW_ITEMS = [
   {
-    heading: "Building in public",
-    body: "Shipping this portfolio site and writing about the decisions behind it. There's a lot to share about the stack choices, the design process, and the trade-offs I made.",
+    heading: "TODO: Current project",
+    body: "TODO: Describe what you're building or working on.",
   },
   {
-    heading: "Learning Rust",
-    body: "Working through the official Rust book and building small CLI tools. It's the most challenging language I've picked up in years, and the ownership model is finally starting to click.",
+    heading: "TODO: Learning",
+    body: "TODO: What are you studying or exploring?",
   },
   {
-    heading: "Design systems deep-dive",
-    body: "Rebuilding a component library from scratch at work using Radix UI primitives + Tailwind. Writing up what I'm learning along the way.",
+    heading: "TODO: Reading",
+    body: "TODO: What books or articles are you reading?",
   },
   {
-    heading: "Reading",
-    body: "Currently: The Pragmatic Programmer (re-read), Four Thousand Weeks by Oliver Burkeman, and Deep Work by Cal Newport. Also working through the Figma blog archive.",
-  },
-  {
-    heading: "Somewhere in the world",
-    body: "Based in [City], working remotely. If you're nearby and want to grab coffee, reach out.",
+    heading: "TODO: Location",
+    body: "TODO: Where are you based? Open to meeting up?",
   },
 ];
 
