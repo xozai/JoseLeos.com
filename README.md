@@ -106,8 +106,8 @@ JoseLeos.com/
 | `NEXT_PUBLIC_SITE_URL` | Yes | Canonical base URL used in OG tags and share links (e.g. `https://joseleos.com`) |
 | `NEXT_PUBLIC_WORDPRESS_API_URL` | Yes | WPGraphQL endpoint on your WordPress instance (e.g. `https://cms.joseleos.com/graphql`) |
 | `NEXT_PUBLIC_WP_MEDIA_HOSTNAME` | Yes | Hostname of your WordPress media server, added to the Next.js Image allowlist |
-| `NEXTAUTH_SECRET` | Yes | Random string used to sign NextAuth JWTs and cookies |
-| `NEXTAUTH_URL` | Yes | Base URL for NextAuth callbacks (set to your production URL on Vercel) |
+| `AUTH_SECRET` | Yes | Random string used to sign NextAuth JWTs and cookies (`openssl rand -base64 32`) |
+| `AUTH_URL` | Yes | Base URL for NextAuth callbacks (set to your production URL on Vercel) |
 | `AUTH_RESEND_KEY` | Yes | Resend API key used by NextAuth to send magic-link emails |
 | `AUTH_EMAIL_FROM` | No | Sender address for auth emails (defaults to `Jose Leos <auth@joseleos.com>`) |
 | `OWNER_EMAIL` | Yes | Email address granted owner-level access (`isOwner = true` in session) |
