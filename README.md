@@ -14,7 +14,7 @@ JoseLeos.com is a full-stack personal site built with Next.js 16 (App Router) an
 | Styling | Tailwind CSS v4 |
 | Animation | Framer Motion 12 |
 | CMS | WordPress + WPGraphQL + Advanced Custom Fields |
-| Auth | NextAuth v5 — magic-link email via Resend |
+| Auth | NextAuth v5 beta — magic-link email via Resend |
 | Database | Vercel Postgres (NextAuth session storage) |
 | Cache | Vercel KV (Upstash Redis) — view counts, rate limiting |
 | Email | Resend — magic-link auth, newsletter, contact form |
@@ -24,23 +24,43 @@ JoseLeos.com is a full-stack personal site built with Next.js 16 (App Router) an
 
 ```
 JoseLeos.com/
+├── .github/
+│   └── workflows/
+│       ├── pr-title.yml      # Conventional Commits PR title linting
+│       └── release-please.yml# Automated SemVer releases
 ├── app/
 │   ├── (auth)/               # Login, verify, error pages
 │   ├── (site)/               # Public-facing site
 │   │   ├── page.tsx          # Homepage
-│   │   ├── blog/             # Blog list + [slug] detail
-│   │   ├── portfolio/        # Portfolio list + [slug] detail
-│   │   ├── recommendations/  # Recommendations list + [slug] detail
 │   │   ├── about/
+│   │   ├── account/          # Member account page
+│   │   ├── blog/             # Blog list + [slug] detail + category/tag filters
+│   │   ├── booking/          # Scheduling / booking page
 │   │   ├── contact/
+│   │   ├── dashboard/        # Owner-only admin dashboard
 │   │   ├── newsletter/
-│   │   └── ...
-│   ├── api/                  # Route handlers (auth, contact, subscribe, views, revalidate)
-│   ├── dashboard/            # Owner-only admin dashboard
+│   │   ├── now/              # /now page (current focus)
+│   │   ├── portfolio/        # Portfolio list + [slug] detail
+│   │   ├── react/            # Reactions API route
+│   │   ├── recommendations/  # Recommendations list + [slug] detail + RSS feed
+│   │   ├── resume/
+│   │   ├── speaking/
+│   │   ├── subscribe/
+│   │   └── uses/
+│   ├── api/                  # Route handlers
+│   │   ├── contact/          # Contact form submission
+│   │   ├── og/               # Open Graph image generation
+│   │   ├── react/            # Post reactions (KV-backed)
+│   │   ├── revalidate/       # On-demand ISR cache purge
+│   │   ├── save/             # Save/bookmark endpoint
+│   │   ├── subscribe/        # Newsletter subscription
+│   │   └── views/            # Page view counter (KV-backed)
+│   ├── feed.xml/             # Site-wide RSS feed
 │   ├── globals.css           # Design tokens, Tailwind theme
 │   └── layout.tsx            # Root layout (Nav, Footer, Providers)
 ├── components/
 │   ├── blog/                 # PostCard, NewsletterCTA, BlogPagination
+│   ├── calendly/             # Booking/scheduling widget
 │   ├── home/                 # Hero
 │   ├── instagram/            # InstagramFeed
 │   ├── layout/               # NavClient, Footer
@@ -60,6 +80,8 @@ JoseLeos.com/
 │   └── utils.ts              # formatDate, cn (classnames)
 ├── auth.ts                   # NextAuth v5 configuration
 ├── proxy.ts                  # Route-protection middleware
+├── CHANGELOG.md
+├── CONTRIBUTING.md
 ├── next.config.ts
 └── .env.example
 ```
@@ -106,13 +128,14 @@ JoseLeos.com/
 | `NEXT_PUBLIC_SITE_URL` | Yes | Canonical base URL used in OG tags and share links (e.g. `https://joseleos.com`) |
 | `NEXT_PUBLIC_WORDPRESS_API_URL` | Yes | WPGraphQL endpoint on your WordPress instance (e.g. `https://cms.joseleos.com/graphql`) |
 | `NEXT_PUBLIC_WP_MEDIA_HOSTNAME` | Yes | Hostname of your WordPress media server, added to the Next.js Image allowlist |
+| `NEXT_PUBLIC_TWITTER_HANDLE` | No | Twitter/X handle shown in OG tags and footer (e.g. `@joseleos`) |
+| `NEXT_PUBLIC_PLAUSIBLE_DOMAIN` | No | Plausible Analytics domain (e.g. `joseleos.com`) — omit to disable analytics |
 | `AUTH_SECRET` | Yes | Random string used to sign NextAuth JWTs and cookies (`openssl rand -base64 32`) |
 | `AUTH_URL` | Yes | Base URL for NextAuth callbacks (set to your production URL on Vercel) |
 | `AUTH_RESEND_KEY` | Yes | Resend API key used by NextAuth to send magic-link emails |
 | `AUTH_EMAIL_FROM` | No | Sender address for auth emails (defaults to `Jose Leos <auth@joseleos.com>`) |
 | `OWNER_EMAIL` | Yes | Email address granted owner-level access (`isOwner = true` in session) |
 | `POSTGRES_URL` | Yes | PostgreSQL connection string for NextAuth session and user storage |
-| `DATABASE_URL` | No | Alias for `POSTGRES_URL` used by some Vercel Postgres tooling |
 | `KV_REST_API_URL` | Yes | Vercel KV (Upstash Redis) REST endpoint for view counts and rate limiting |
 | `KV_REST_API_TOKEN` | Yes | Authentication token for the KV REST API |
 | `RESEND_API_KEY` | Yes | Resend API key for newsletter subscriptions and contact form emails |
@@ -177,6 +200,10 @@ The `session` callback attaches an `isOwner` boolean to the session user object 
 4. **Connect a custom domain.** In *Settings → Domains*, add your domain and follow the DNS instructions. Update `NEXT_PUBLIC_SITE_URL` and `NEXTAUTH_URL` to match the production domain.
 
 5. **ISR revalidation.** Most pages use `export const revalidate = 60`, so content refreshes from WordPress within 60 seconds of a change. For immediate cache purges, call the `/api/revalidate` endpoint with the appropriate secret from a WordPress publish hook.
+
+## Contributing
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for commit conventions and the release process. All PRs must use [Conventional Commits](https://www.conventionalcommits.org/) in the title. Releases are automated via [release-please](https://github.com/googleapis/release-please) — see [CHANGELOG.md](./CHANGELOG.md) for the version history.
 
 ## License
 
