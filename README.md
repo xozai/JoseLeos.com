@@ -14,9 +14,9 @@ the newest entry below is still in review. For the full generated history see [C
 - **Infrastructure & CI** — Every pull request now has its title linted against Conventional
   Commits, and releases are cut automatically, so the changelog and GitHub Releases are generated
   rather than hand-maintained (`d394de8`).
-- **Infrastructure & CI** — Release automation is being moved to release-please v5 and pr-title v6
-  with an hourly self-heal tick, replacing a fine-grained PAT that reproducibly broke tagging
-  (`d1f53a9`, in review on `chore/ci-hardening`).
+- **Infrastructure & CI** — Release automation switched to a fine-grained PAT to work around
+  org-level token restrictions (`d1f53a9`); that PAT reproducibly broke tagging, so a follow-up
+  moving to release-please v5 and pr-title v6 with an hourly self-heal tick is in review.
 - **Auth & API** — Magic-link sign-in reads the NextAuth v5 environment names (`AUTH_SECRET` /
   `AUTH_URL`), fixing logins that failed silently against the old `NEXTAUTH_*` names (`7613431`).
 - **App & Pages** — The About, Resume, Now, and Uses pages show explicit TODO placeholders instead
