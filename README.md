@@ -8,24 +8,25 @@ JoseLeos.com is a full-stack personal site built with Next.js 16 (App Router) an
 
 ## Recent Updates
 
-*Last reviewed 2026-08-14. Covers work through `v0.1.1` — `main` has no commits after that tag, so
-the newest entry below is still in review. For the full generated history see [CHANGELOG.md](CHANGELOG.md).*
+*Last reviewed 2026-08-15. Covers work through `main` — the latest tag is `v0.1.1`, and the three
+changes below landed after it, so they ship in the next release. For the full generated history see
+[CHANGELOG.md](CHANGELOG.md).*
 
-- **Infrastructure & CI** — Every pull request now has its title linted against Conventional
-  Commits, and releases are cut automatically, so the changelog and GitHub Releases are generated
-  rather than hand-maintained (`d394de8`).
-- **Infrastructure & CI** — Release automation switched to a fine-grained PAT to work around
-  org-level token restrictions (`d1f53a9`); that PAT reproducibly broke tagging, so a follow-up
-  moving to release-please v5 and pr-title v6 with an hourly self-heal tick is in review.
-- **Auth & API** — Magic-link sign-in reads the NextAuth v5 environment names (`AUTH_SECRET` /
-  `AUTH_URL`), fixing logins that failed silently against the old `NEXTAUTH_*` names (`7613431`).
-- **App & Pages** — The About, Resume, Now, and Uses pages show explicit TODO placeholders instead
-  of stale filler, so unfinished sections read as intentional rather than broken (`27f799e`).
-- **Content & Copy** — The interim landing page gained a working contact form, a square-cropped
-  profile headshot, refreshed social links, and a scheduling call-to-action (`6aa66ec`, `b46c145`,
-  `ad24205`).
-- **Content & Copy** — The README's architecture and setup docs were audited against the routes
-  that actually ship, so the documented structure matches the real one (`eb8912b`).
+- **Infrastructure & CI** — Release automation was hardened: release-please moved to v5 and the PR
+  title linter to v6, both jobs pin `FORCE_JAVASCRIPT_ACTIONS_TO_NODE24`, and the fine-grained PAT
+  was dropped in favour of the built-in `GITHUB_TOKEN` because the PAT reproducibly broke tagging
+  with "Error adding to tree". Because that token suppresses the `push` event when a Release PR
+  auto-merges, an hourly `schedule` tick plus `workflow_dispatch` now act as a self-heal backstop,
+  and a synthetic check-run reports "Lint PR title" on Release PRs so branch protection cannot
+  deadlock on a title the linter never sees (#21).
+- **Tests** — The Playwright E2E suite grew past smoke coverage into auth, middleware route gating,
+  and the subscribe API — roughly 290 lines of new specs across three files, all with mocked
+  network calls so no live WordPress, Postgres, or KV backend is needed. The runner also had a real
+  bug fixed: `baseURL` pointed at port 3000 while `npm run dev` serves on 4000, and the managed dev
+  server now gets `AUTH_SECRET` / `AUTH_URL` so gated routes redirect instead of 500ing (#22).
+- **Docs & Content** — The README gained this Recent Updates section (#20), and CONTRIBUTING.md
+  expanded to document the release process end to end, including the known CI failure modes and an
+  explicit warning against reintroducing the PAT (#21).
 
 ## Tech Stack
 
