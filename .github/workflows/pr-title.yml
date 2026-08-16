@@ -1,7 +1,10 @@
 name: PR Title Lint
 
+# pull_request_target (not pull_request) so the linter also runs on PRs opened
+# from forks, where the pull_request event's GITHUB_TOKEN is read-only and the
+# check cannot be reported. No PR code is checked out, so this is safe.
 on:
-  pull_request:
+  pull_request_target:
     types: [opened, edited, synchronize, reopened]
 
 permissions:
