@@ -1,5 +1,13 @@
 import { test, expect } from "@playwright/test";
 
+/**
+ * ENV: the tests marked `test.skip` below mock WPGraphQL by routing the
+ * GraphQL endpoint with page.route(), but these pages fetch through Apollo
+ * inside server components — the request leaves from Node, never the browser,
+ * so Playwright cannot intercept it. They only pass against a live WordPress
+ * backend, and are skipped until one is wired into the run.
+ */
+
 test.describe("Recommendations listing page", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/recommendations");
@@ -48,7 +56,7 @@ test.describe("Recommendations listing page", () => {
 });
 
 test.describe("Recommendations detail page", () => {
-  test("renders correctly when visiting a mocked review", async ({ page }) => {
+  test.skip("renders correctly when visiting a mocked review", async ({ page }) => {
     // We mock the WP GraphQL call to return a fake recommendation
     await page.route("**/graphql", async (route) => {
       const body = route.request().postData() ?? "";
@@ -104,7 +112,7 @@ test.describe("Recommendations detail page", () => {
     await expect(page.locator("text=One of the best books I have read.")).toBeVisible();
   });
 
-  test("shows pros and cons sections when present", async ({ page }) => {
+  test.skip("shows pros and cons sections when present", async ({ page }) => {
     await page.route("**/graphql", async (route) => {
       const body = route.request().postData() ?? "";
       if (body.includes("GetRecommendationBySlug")) {

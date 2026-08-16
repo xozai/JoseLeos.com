@@ -1,12 +1,20 @@
 import { test, expect } from "@playwright/test";
 
+/**
+ * ENV: the tests marked `test.skip` below mock WPGraphQL by routing the
+ * GraphQL endpoint with page.route(), but these pages fetch through Apollo
+ * inside server components — the request leaves from Node, never the browser,
+ * so Playwright cannot intercept it. They only pass against a live WordPress
+ * backend, and are skipped until one is wired into the run.
+ */
+
 test.describe("Blog listing pagination", () => {
   test("renders the blog heading", async ({ page }) => {
     await page.goto("/blog");
     await expect(page.getByRole("heading", { name: /^Blog$/i, level: 1 })).toBeVisible();
   });
 
-  test("shows older-posts link when hasNextPage (mocked)", async ({ page }) => {
+  test.skip("shows older-posts link when hasNextPage (mocked)", async ({ page }) => {
     await page.route("**/graphql", async (route) => {
       const body = route.request().postData() ?? "";
       if (body.includes("GetPosts")) {
@@ -39,7 +47,7 @@ test.describe("Blog listing pagination", () => {
     await expect(page.getByRole("link", { name: /Older posts/i })).toBeVisible();
   });
 
-  test("?after param shows newer-posts link", async ({ page }) => {
+  test.skip("?after param shows newer-posts link", async ({ page }) => {
     await page.route("**/graphql", async (route) => {
       const body = route.request().postData() ?? "";
       if (body.includes("GetPosts")) {
@@ -74,7 +82,7 @@ test.describe("Blog listing pagination", () => {
 });
 
 test.describe("Blog category page", () => {
-  test("renders category heading and posts", async ({ page }) => {
+  test.skip("renders category heading and posts", async ({ page }) => {
     await page.route("**/graphql", async (route) => {
       const body = route.request().postData() ?? "";
       if (body.includes("GetPostsByCategoryPaginated")) {
@@ -119,7 +127,7 @@ test.describe("Blog category page", () => {
     await expect(page.getByText("Dev Post Title")).toBeVisible();
   });
 
-  test("back to blog link is present", async ({ page }) => {
+  test.skip("back to blog link is present", async ({ page }) => {
     await page.route("**/graphql", async (route) => {
       const body = route.request().postData() ?? "";
       if (body.includes("GetPostsByCategoryPaginated")) {
@@ -154,7 +162,7 @@ test.describe("Blog category page", () => {
 });
 
 test.describe("Blog tag page", () => {
-  test("renders tag heading with hash prefix", async ({ page }) => {
+  test.skip("renders tag heading with hash prefix", async ({ page }) => {
     await page.route("**/graphql", async (route) => {
       const body = route.request().postData() ?? "";
       if (body.includes("GetPostsByTag")) {
@@ -202,7 +210,7 @@ test.describe("Blog tag page", () => {
 });
 
 test.describe("Newsletter archive page", () => {
-  test("renders newsletter heading and subscribe button", async ({ page }) => {
+  test.skip("renders newsletter heading and subscribe button", async ({ page }) => {
     await page.route("**/graphql", async (route) => {
       const body = route.request().postData() ?? "";
       if (body.includes("GetPostsByCategoryPaginated")) {
@@ -249,7 +257,7 @@ test.describe("Newsletter archive page", () => {
     await expect(page.getByText(/No issues published yet/i)).toBeVisible();
   });
 
-  test("shows past issues when available", async ({ page }) => {
+  test.skip("shows past issues when available", async ({ page }) => {
     await page.route("**/graphql", async (route) => {
       const body = route.request().postData() ?? "";
       if (body.includes("GetPostsByCategoryPaginated")) {

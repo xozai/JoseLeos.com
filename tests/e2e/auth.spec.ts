@@ -6,10 +6,18 @@ import { test, expect } from "@playwright/test";
  * touching Resend or Postgres.
  */
 
-/** Minimal stand-in for the NextAuth endpoints `signIn()` hits. */
+/**
+ * Minimal stand-in for the NextAuth endpoints `signIn()` hits.
+ *
+ * `signInUrl` is resolved to an absolute URL before it is returned. next-auth
+ * v5's client does `new URL(data.url)` on the response to read the error code
+ * out of the query string, which throws TypeError on a relative path or null —
+ * that rejection propagates out of signIn() so the page neither navigates nor
+ * shows its error state. Signal failure with an `?error=` param instead.
+ */
 async function mockNextAuth(
   page: import("@playwright/test").Page,
-  signInResponse: Record<string, unknown>
+  signInUrl: string
 ) {
   await page.route("**/api/auth/csrf", (route) =>
     route.fulfill({ json: { csrfToken: "test-csrf-token" } })
@@ -28,7 +36,9 @@ async function mockNextAuth(
     })
   );
   await page.route("**/api/auth/signin/resend**", (route) =>
-    route.fulfill({ json: signInResponse })
+    route.fulfill({
+      json: { url: new URL(signInUrl, route.request().url()).toString() },
+    })
   );
 }
 
@@ -65,7 +75,7 @@ test.describe("Login page", () => {
   });
 
   test("a valid email sends the user to the verify page", async ({ page }) => {
-    await mockNextAuth(page, { url: "/login/verify" });
+    await mockNextAuth(page, "/login/verify");
 
     await page.getByLabel(/Email address/i).fill("visitor@example.com");
     await page.getByRole("button", { name: /Send magic link/i }).click();
@@ -74,7 +84,7 @@ test.describe("Login page", () => {
   });
 
   test("shows an inline error when sign-in fails", async ({ page }) => {
-    await mockNextAuth(page, { error: "EmailSignInError", url: null });
+    await mockNextAuth(page, "/login?error=EmailSignInError");
 
     await page.getByLabel(/Email address/i).fill("visitor@example.com");
     await page.getByRole("button", { name: /Send magic link/i }).click();
