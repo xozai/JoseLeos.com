@@ -6,6 +6,27 @@
 
 JoseLeos.com is a full-stack personal site built with Next.js 16 (App Router) and a headless WordPress backend served via WPGraphQL. It combines a project portfolio, a long-form blog, and a curated recommendations section with a three-tier access control system that gates content for public visitors, authenticated members, and the site owner. All content is managed in WordPress with ACF custom fields; the Next.js frontend fetches it at build and request time via Apollo Client.
 
+## Recent Updates
+
+*Last reviewed 2026-08-14. Covers work through `v0.1.1` — `main` has no commits after that tag, so
+the newest entry below is still in review. For the full generated history see [CHANGELOG.md](CHANGELOG.md).*
+
+- **Infrastructure & CI** — Every pull request now has its title linted against Conventional
+  Commits, and releases are cut automatically, so the changelog and GitHub Releases are generated
+  rather than hand-maintained (`d394de8`).
+- **Infrastructure & CI** — Release automation switched to a fine-grained PAT to work around
+  org-level token restrictions (`d1f53a9`); that PAT reproducibly broke tagging, so a follow-up
+  moving to release-please v5 and pr-title v6 with an hourly self-heal tick is in review.
+- **Auth & API** — Magic-link sign-in reads the NextAuth v5 environment names (`AUTH_SECRET` /
+  `AUTH_URL`), fixing logins that failed silently against the old `NEXTAUTH_*` names (`7613431`).
+- **App & Pages** — The About, Resume, Now, and Uses pages show explicit TODO placeholders instead
+  of stale filler, so unfinished sections read as intentional rather than broken (`27f799e`).
+- **Content & Copy** — The interim landing page gained a working contact form, a square-cropped
+  profile headshot, refreshed social links, and a scheduling call-to-action (`6aa66ec`, `b46c145`,
+  `ad24205`).
+- **Content & Copy** — The README's architecture and setup docs were audited against the routes
+  that actually ship, so the documented structure matches the real one (`eb8912b`).
+
 ## Tech Stack
 
 | Layer | Technology |
