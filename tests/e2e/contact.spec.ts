@@ -23,7 +23,9 @@ test.describe("Contact page", () => {
   test("shows error for short name", async ({ page }) => {
     await page.getByPlaceholder(/Your name/i).fill("A");
     await page.getByRole("button", { name: /Send Message/i }).click();
-    await expect(page.locator("text=/at least 2/i")).toBeVisible();
+    // Anchored to the name error specifically: /at least 2/ also matches the
+    // message field's "at least 20 characters", which trips strict mode.
+    await expect(page.getByText(/Name must be at least 2 characters/i)).toBeVisible();
   });
 
   test("submit button is disabled while loading", async ({ page }) => {

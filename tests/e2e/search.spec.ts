@@ -1,23 +1,36 @@
 import { test, expect } from "@playwright/test";
 
+/**
+ * SearchOverlay is mounted inside the `hidden md:flex` desktop nav in
+ * NavClient.tsx, and the mobile menu has no search entry — so neither the
+ * trigger button nor the ⌘K shortcut exists below the md breakpoint. These
+ * specs are therefore desktop-only until search is reachable on mobile.
+ */
+const SEARCH_PLACEHOLDER = /Search posts, projects and reviews/i;
+
 test.describe("Search overlay", () => {
+  test.skip(
+    ({ isMobile }) => !!isMobile,
+    "Search is not reachable on mobile viewports — SearchOverlay only renders in the desktop nav"
+  );
+
   test.beforeEach(async ({ page }) => {
     await page.goto("/");
   });
 
   test("opens with Ctrl+K keyboard shortcut", async ({ page }) => {
     await page.keyboard.press("Control+k");
-    await expect(page.getByPlaceholder(/Search posts and projects/i)).toBeVisible();
+    await expect(page.getByPlaceholder(SEARCH_PLACEHOLDER)).toBeVisible();
   });
 
   test("opens when the search trigger button is clicked", async ({ page }) => {
     await page.getByRole("button", { name: /Search/i }).click();
-    await expect(page.getByPlaceholder(/Search posts and projects/i)).toBeVisible();
+    await expect(page.getByPlaceholder(SEARCH_PLACEHOLDER)).toBeVisible();
   });
 
   test("closes with Escape key", async ({ page }) => {
     await page.keyboard.press("Control+k");
-    const input = page.getByPlaceholder(/Search posts and projects/i);
+    const input = page.getByPlaceholder(SEARCH_PLACEHOLDER);
     await expect(input).toBeVisible();
     await page.keyboard.press("Escape");
     await expect(input).not.toBeVisible();
@@ -25,7 +38,7 @@ test.describe("Search overlay", () => {
 
   test("closes when clicking the backdrop", async ({ page }) => {
     await page.keyboard.press("Control+k");
-    const input = page.getByPlaceholder(/Search posts and projects/i);
+    const input = page.getByPlaceholder(SEARCH_PLACEHOLDER);
     await expect(input).toBeVisible();
     // Click outside the search modal
     await page.mouse.click(10, 10);
@@ -43,7 +56,7 @@ test.describe("Search overlay", () => {
       route.fulfill({ json: [] })
     );
     await page.keyboard.press("Control+k");
-    await page.getByPlaceholder(/Search posts and projects/i).fill("xyzzy1234nonsense");
+    await page.getByPlaceholder(SEARCH_PLACEHOLDER).fill("xyzzy1234nonsense");
     await expect(page.locator("text=/No results for/i")).toBeVisible({ timeout: 3000 });
   });
 
@@ -57,7 +70,7 @@ test.describe("Search overlay", () => {
       })
     );
     await page.keyboard.press("Control+k");
-    await page.getByPlaceholder(/Search posts and projects/i).fill("test");
+    await page.getByPlaceholder(SEARCH_PLACEHOLDER).fill("test");
     await expect(page.locator("text=Test Post Title")).toBeVisible({ timeout: 3000 });
     await expect(page.locator("text=Test Project")).toBeVisible();
   });
