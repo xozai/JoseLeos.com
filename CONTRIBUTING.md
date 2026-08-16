@@ -62,7 +62,11 @@ WIP: working on search        ← WIP is not a valid type
 
 ### Versioning (pre-1.0)
 
-The repo follows SemVer with a `v` prefix. While the major version is `0`:
+The repo follows SemVer with a `v` prefix.
+
+Under SemVer the general rule is `fix` → patch, `feat` → minor, and `feat!` / `BREAKING CHANGE:`
+→ major. This repo sets `bump-minor-pre-major: true` in `release-please-config.json`, so while the
+major version is `0` the mapping is:
 
 | Commit type(s)                | Version bump |
 |-------------------------------|--------------|
@@ -83,6 +87,20 @@ Releases are fully automated via [release-please](https://github.com/googleapis/
 3. Review the Release PR — it accumulates multiple commits until you merge it.
 4. Merging the Release PR cuts the GitHub Release and creates the `vX.Y.Z` git tag automatically.
 
-> **Common failure modes:** missing workflow permissions (`contents: write`,
-> `pull-requests: write`), or org-level settings that block `GITHUB_TOKEN` from opening PRs
-> (fix: add a `RELEASE_PLEASE_TOKEN` PAT in repo secrets and pass it to the action).
+`CHANGELOG.md` and the GitHub Releases page are **generated artifacts**. Never edit `CHANGELOG.md`
+by hand, never create tags manually, and never bump the version in `package.json` yourself —
+release-please owns all three, and hand edits are overwritten on the next release. To change what
+appears in the changelog, change your PR title.
+
+The workflow (`.github/workflows/release-please.yml`) also runs on an hourly `schedule` and on
+`workflow_dispatch`. The hourly tick is a self-heal backstop: the built-in `GITHUB_TOKEN`
+suppresses the `push` event produced when the Release PR auto-merges, so the schedule picks up any
+merged-but-untagged release within the hour.
+
+> **Common failure modes:** missing workflow permissions (`contents: write`, `pull-requests: write`,
+> `checks: write`), or a job missing `FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true`.
+>
+> **Do not use a `RELEASE_PLEASE_TOKEN` PAT.** Passing a fine-grained PAT to the action
+> reproducibly breaks it with `Error adding to tree`. Use `secrets.GITHUB_TOKEN` only. If org
+> settings block `GITHUB_TOKEN` from opening PRs, enable *Allow GitHub Actions to create and
+> approve pull requests* in the repo/org Actions settings instead.
